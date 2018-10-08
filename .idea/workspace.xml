@@ -2,21 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3085cca2-94b5-4a46-83ef-0af56510d516" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/PrivateClient.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/PrivateClient.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/PrivateClient.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/PrivateClient.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/PrivateClient.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/PrivateClient.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/PublicClient.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/PublicClient.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/PublicClient.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/PublicClient.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/PublicClient.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/PublicClient.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/private.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/private.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/privateBundle.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/privateBundle.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/public.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/public.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/publicBundle.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/publicBundle.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/slides-onward-18-test.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/slides-onward-18-test.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/server.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/server.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/server.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/server.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/server.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -30,12 +16,13 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="server.ts" pinned="false" current-in-tab="true">
+      <file leaf-file-name="server.ts" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/server/server.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-86">
-              <caret line="16" column="47" selection-start-line="16" selection-start-column="47" selection-end-line="16" selection-end-column="47" />
+            <state relative-caret-position="165">
+              <caret line="11" column="27" selection-start-line="11" selection-start-column="21" selection-end-line="11" selection-end-column="27" />
               <folding>
+                <element signature="e#0#52#0" expanded="true" />
                 <element signature="n#style#0;n#button#0;n#li#0;n#ul#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#ul#0;n#li#1;n#ul#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#button#0;n#!!top" expanded="true" />
@@ -44,6 +31,15 @@
                 <element signature="n#!!block;n#registerPrivateClient#0;n#OnwardServer#0" expanded="true" />
                 <element signature="n#!!block;n#slideChange#0;n#OnwardServer#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="package.json" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/package.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="120">
+              <caret line="8" column="21" selection-start-line="8" selection-start-column="21" selection-end-line="8" selection-end-column="21" />
             </state>
           </provider>
         </entry>
@@ -108,7 +104,6 @@
         <option value="$PROJECT_DIR$/node_modules/spiders.captain/index.d.ts" />
         <option value="$PROJECT_DIR$/src/client/slides-onward-18-test-private.html" />
         <option value="$PROJECT_DIR$/src/client/slides-onward-18-test.html" />
-        <option value="$PROJECT_DIR$/package.json" />
         <option value="$PROJECT_DIR$/src/client/public.html" />
         <option value="$PROJECT_DIR$/tsconfig.json" />
         <option value="$PROJECT_DIR$/src/data/SlideShow.ts" />
@@ -117,6 +112,7 @@
         <option value="$PROJECT_DIR$/src/server/server.ts" />
         <option value="$PROJECT_DIR$/src/client/PrivateClient.ts" />
         <option value="$PROJECT_DIR$/src/client/PublicClient.ts" />
+        <option value="$PROJECT_DIR$/package.json" />
       </list>
     </option>
   </component>
@@ -241,15 +237,24 @@
       <workItem from="1538664786747" duration="67000" />
       <workItem from="1538665683609" duration="2328000" />
       <workItem from="1538986533887" duration="3761000" />
-      <workItem from="1538991524940" duration="427000" />
+      <workItem from="1538991524940" duration="591000" />
     </task>
+    <task id="LOCAL-00001" summary="First server-ready version">
+      <created>1538991985156</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1538991985156</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="49669000" />
+    <option name="totallyTimeSpent" value="49833000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="807" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="TypeScript" order="7" />
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2114165" />
@@ -289,6 +294,11 @@
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <MESSAGE value="First server-ready version" />
+    <option name="LAST_COMMIT_MESSAGE" value="First server-ready version" />
+  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <option name="time" value="3" />
@@ -300,6 +310,7 @@
         <state relative-caret-position="345">
           <caret line="28" column="61" selection-start-line="28" selection-start-column="61" selection-end-line="28" selection-end-column="61" />
           <folding>
+            <element signature="e#0#52#0" expanded="true" />
             <element signature="n#style#0;n#button#0;n#li#0;n#ul#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#ul#0;n#li#1;n#ul#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#button#0;n#!!top" expanded="true" />
@@ -616,13 +627,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" column="22" selection-start-line="7" selection-start-column="22" selection-end-line="7" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -655,6 +659,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="336">
           <caret line="815" column="176" lean-forward="true" selection-start-line="815" selection-start-column="176" selection-end-line="815" selection-end-column="176" />
+          <folding>
+            <element signature="e#340512#340518#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -684,9 +691,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/server/server.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-86">
-          <caret line="16" column="47" selection-start-line="16" selection-start-column="47" selection-end-line="16" selection-end-column="47" />
+        <state relative-caret-position="165">
+          <caret line="11" column="27" selection-start-line="11" selection-start-column="21" selection-end-line="11" selection-end-column="27" />
           <folding>
+            <element signature="e#0#52#0" expanded="true" />
             <element signature="n#style#0;n#button#0;n#li#0;n#ul#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#ul#0;n#li#1;n#ul#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#button#0;n#!!top" expanded="true" />
@@ -695,6 +703,13 @@
             <element signature="n#!!block;n#registerPrivateClient#0;n#OnwardServer#0" expanded="true" />
             <element signature="n#!!block;n#slideChange#0;n#OnwardServer#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="8" column="21" selection-start-line="8" selection-start-column="21" selection-end-line="8" selection-end-column="21" />
         </state>
       </provider>
     </entry>
