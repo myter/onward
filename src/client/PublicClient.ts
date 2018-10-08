@@ -21,7 +21,9 @@ export class PublicClient extends CAPplication{
                 let text        = $("#questionText").val()
                 let question    = new Question(text)
                 this.questionList.newQuestion(question)
+                $("#questionText").val('')
             })
+            this.showQuestions()
         })
     }
 
@@ -41,5 +43,4 @@ export class PublicClient extends CAPplication{
         })
     }
 }
-
-let client = new PublicClient()
+new PublicClient()

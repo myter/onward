@@ -27861,7 +27861,9 @@ class PublicClient extends spiders_captain_1.CAPplication {
                 let text = $("#questionText").val();
                 let question = new Questions_1.Question(text);
                 this.questionList.newQuestion(question);
+                $("#questionText").val('');
             });
+            this.showQuestions();
         });
     }
     gotoSlide(slideH, slideV) {
@@ -27880,7 +27882,7 @@ class PublicClient extends spiders_captain_1.CAPplication {
     }
 }
 exports.PublicClient = PublicClient;
-let client = new PublicClient();
+new PublicClient();
 
 },{"../data/Questions":119,"spiders.captain":71}],119:[function(require,module,exports){
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {

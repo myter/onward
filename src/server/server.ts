@@ -15,7 +15,7 @@ function injectHTML(bundlePath,sourceHTMLPath,targetHTMLPath){
         '    <div class="modal-content">\n' +
         '      <h4>Type Your Question</h4>\n' +
         '      <div class="input-field col s12">\n' +
-        '          <textarea id="questionText" class="materialize-textarea"></textarea>\n' +
+        '          <textarea id="questionText" class="materialize-textarea" autofocus></textarea>\n' +
         '          <label for="questionText">question</label>\n' +
         '      </div>\n'+
         '    </div>\n' +
@@ -31,8 +31,8 @@ function injectHTML(bundlePath,sourceHTMLPath,targetHTMLPath){
         ' <button data-target="slide-out" class="sidenav-trigger"  style="position:absolute;right:0;top:0" onclick="$(\'.sidenav\').sidenav();"><i class="material-icons">menu</i></button> \n')
     $('head').prepend('<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">')
     $('head').prepend('<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">')
-    $('body').append('<script src='+bundlePath+'></script>')
-    $('body').append('<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>')
+    $('body').append('<script src='+bundlePath+' />\n')
+    $('body').append('<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>\n')
     fs.writeFile(targetHTMLPath, window.document.documentElement.outerHTML,
         function (error){
             if (error) throw error;
@@ -60,16 +60,21 @@ export class OnwardServer extends CAPplication{
             this.slideChange()
         });
         this.questionList       = new QuestionList();
+        (this.libs as any).serveApp("../client/private.html","../client/PrivateClient.js","privateBundle.js",9999)
+        console.log("Server listening on 9999 for private connection");
         (this.libs as any).serveApp("../client/public.html","../client/PublicClient.js","publicBundle.js",8888)
         console.log("Server listening on 8888 for public connection");
-        (this.libs as any).serveApp("../client/private.html","../client/PrivateClient.js","privateBundle.js",9999)
-        console.log("Server listening on 9999 for private connection")
     }
 
     //TODO check browser fingerprint to ensure no spamming ?
     registerPublicClient(clientRef){
         console.log("Public client registered")
-        this.publicClients.push(clientRef)
+        this.publicClients.push(clientRef);
+        (this.slideShow.currentSlideH as any).then((h)=>{
+            (this.slideShow.currentSlideV as any).then((v)=>{
+                clientRef.gotoSlide(h,v)
+            })
+        })
         return this.questionList
     }
 
@@ -93,9 +98,9 @@ export class OnwardServer extends CAPplication{
 
 
 
-injectHTML("./publicBundle.js","../client/slides-onward-18-test.html","../client/public.html")
 injectHTML("./privateBundle.js","../client/slides-onward-18-test.html","../client/private.html")
-let server = new OnwardServer()
+injectHTML("./publicBundle.js","../client/slides-onward-18-test.html","../client/public.html")
+new OnwardServer()
 
 
 
