@@ -12,7 +12,7 @@ export class PublicClient extends CAPplication{
     constructor(){
         super()
         //TODO => put in config
-        this.server = (this.libs as any).buffRemote("saliva.soft.vub.ac.be",8000);
+        this.server = (this.libs as any).buffRemote("134.184.43.156",8000);
         //this.server = (this.libs as any).buffRemote("127.0.0.1",8000);
         (this.server.registerPublicClient(this) as any).then((questionList : QuestionList)=>{
             this.questionList = questionList
