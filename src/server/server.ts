@@ -94,6 +94,13 @@ export class OnwardServer extends CAPplication{
                 })
             })
         })
+        this.privateClients.forEach((client : FarRef<PrivateClient>)=>{
+            (this.slideShow.currentSlideH as any).then((h)=>{
+                (this.slideShow.currentSlideV as any).then((v)=>{
+                    client.gotoSlide(h,v)
+                })
+            })
+        })
     }
 }
 

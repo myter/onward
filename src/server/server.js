@@ -77,6 +77,13 @@ class OnwardServer extends spiders_captain_1.CAPplication {
                 });
             });
         });
+        this.privateClients.forEach((client) => {
+            this.slideShow.currentSlideH.then((h) => {
+                this.slideShow.currentSlideV.then((v) => {
+                    client.gotoSlide(h, v);
+                });
+            });
+        });
     }
 }
 exports.OnwardServer = OnwardServer;
