@@ -7,7 +7,7 @@ class PublicClient extends spiders_captain_1.CAPplication {
     constructor() {
         super();
         //TODO => put in config
-        this.server = this.libs.buffRemote("127.0.0.1", 8000);
+        this.server = this.libs.buffRemote("saliva.soft.vub.ac.be", 8000);
         this.server.registerPublicClient(this).then((questionList) => {
             this.questionList = questionList;
             this.questionList.onCommit(this.showQuestions.bind(this));
