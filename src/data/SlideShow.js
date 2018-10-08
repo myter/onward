@@ -3,8 +3,8 @@ const spiders_captain_1 = require("spiders.captain");
 class SlideShow extends spiders_captain_1.Consistent {
     constructor() {
         super();
-        this.currentSlideH = 1;
-        this.currentSlideV = 1;
+        this.currentSlideH = 0;
+        this.currentSlideV = 0;
         this.listeners = [];
     }
     //TODO will need to be more complex than just nextslide

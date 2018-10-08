@@ -7,8 +7,8 @@ export class SlideShow extends Consistent{
 
     constructor(){
         super()
-        this.currentSlideH      = 1
-        this.currentSlideV      = 1
+        this.currentSlideH      = 0
+        this.currentSlideV      = 0
         this.listeners          = []
     }
 
