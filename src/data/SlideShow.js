@@ -46,6 +46,9 @@ class SlideShow extends spiders_captain_1.Consistent {
         });
     }
     onChange(listener) {
+        if (!this.listeners) {
+            this.listeners = [];
+        }
         this.listeners.push(listener);
     }
 }

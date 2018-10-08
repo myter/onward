@@ -6,10 +6,9 @@
       <change beforePath="$PROJECT_DIR$/src/client/PrivateClient.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/PrivateClient.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/client/PrivateClient.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/PrivateClient.js.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/client/PrivateClient.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/PrivateClient.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/PublicClient.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/PublicClient.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/PublicClient.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/PublicClient.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/private.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/private.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/client/privateBundle.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/privateBundle.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/publicBundle.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/publicBundle.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/public.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/public.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/data/SlideShow.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/data/SlideShow.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/data/SlideShow.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/src/data/SlideShow.js.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/data/SlideShow.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/data/SlideShow.ts" afterDir="false" />
@@ -32,13 +31,22 @@
       <file leaf-file-name="server.ts" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/server/server.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="217">
-              <caret line="92" selection-start-line="92" selection-end-line="92" />
+            <state relative-caret-position="283">
+              <caret line="106" column="39" selection-start-line="106" selection-start-column="39" selection-end-line="106" selection-end-column="39" />
               <folding>
                 <element signature="e#0#52#0" expanded="true" />
+                <element signature="n#!!block;n#injectHTML#0" expanded="true" />
+                <element signature="n#style#0;n#button#0;n#li#0;n#ul#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#ul#0;n#li#1;n#ul#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#button#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#button#1;n#!!top" expanded="true" />
                 <element signature="n#!!block;n#constructor#0;n#OnwardServer#0" expanded="true" />
                 <element signature="n#!!block;n#registerPublicClient#0;n#OnwardServer#0" expanded="true" />
                 <element signature="n#!!block;n#registerPrivateClient#0;n#OnwardServer#0" expanded="true" />
+                <element signature="n#!!block;n#slideChange#0;n#OnwardServer#0" expanded="true" />
+                <element signature="e#4215#4430#0" expanded="true" />
+                <element signature="e#4277#4419#0" expanded="true" />
+                <element signature="e#4343#4404#0" expanded="true" />
                 <element signature="e#4738#4953#0" expanded="true" />
                 <element signature="e#4800#4942#0" expanded="true" />
                 <element signature="e#4866#4927#0" expanded="true" />
@@ -47,16 +55,18 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PrivateClient.ts" pinned="false" current-in-tab="false">
+      <file leaf-file-name="PrivateClient.ts" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/client/PrivateClient.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="17" column="10" selection-start-line="17" selection-start-column="10" selection-end-line="17" selection-end-column="10" />
+            <state relative-caret-position="141">
+              <caret line="16" column="8" selection-start-line="16" selection-start-column="8" selection-end-line="16" selection-end-column="8" />
               <folding>
                 <element signature="e#0#53#0" expanded="true" />
                 <element signature="e#767#1587#0" expanded="true" />
                 <element signature="e#1250#1476#0" expanded="true" />
                 <element signature="e#1527#1543#0" expanded="true" />
+                <element signature="e#1578#1618#0" expanded="true" />
+                <element signature="e#1696#1744#0" expanded="true" />
                 <element signature="n#!!block;n#gotoSlide#0;n#PrivateClient#0" expanded="true" />
                 <element signature="n#!!block;n#showQuestions#0;n#PrivateClient#0" expanded="true" />
                 <element signature="e#2388#2954#0" expanded="true" />
@@ -68,8 +78,8 @@
       <file leaf-file-name="SlideShow.ts" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/data/SlideShow.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="793">
-              <caret line="54" column="10" selection-start-line="54" selection-start-column="10" selection-end-line="54" selection-end-column="10" />
+            <state relative-caret-position="885">
+              <caret line="59" column="31" selection-start-line="59" selection-start-column="31" selection-end-line="59" selection-end-column="31" />
               <folding>
                 <element signature="n#!!block;n#constructor#0;n#SlideShow#0" expanded="true" />
                 <element signature="n#!!block;n#slideChange#0;n#SlideShow#0" expanded="true" />
@@ -80,17 +90,17 @@
                 <element signature="e#895#930#0" expanded="true" />
                 <element signature="n#!!block;n#goLeft#0;n#SlideShow#0" expanded="true" />
                 <element signature="e#1043#1070#0" expanded="true" />
+                <element signature="n#!!block;n#goRight#0;n#SlideShow#0" expanded="true" />
                 <element signature="e#1211#1238#0" expanded="true" />
-                <element signature="n#!!block;n#onChange#0;n#SlideShow#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PublicClient.ts" pinned="false" current-in-tab="true">
+      <file leaf-file-name="PublicClient.ts" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/client/PublicClient.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
+            <state relative-caret-position="125">
               <caret line="15" column="10" selection-start-line="15" selection-start-column="10" selection-end-line="15" selection-end-column="10" />
               <folding>
                 <element signature="e#0#46#0" expanded="true" />
@@ -269,7 +279,7 @@
       <workItem from="1538664786747" duration="67000" />
       <workItem from="1538665683609" duration="2328000" />
       <workItem from="1538986533887" duration="3761000" />
-      <workItem from="1538991524940" duration="8499000" />
+      <workItem from="1538991524940" duration="9394000" />
     </task>
     <task id="LOCAL-00001" summary="First server-ready version">
       <created>1538991985156</created>
@@ -306,11 +316,25 @@
       <option name="project" value="LOCAL" />
       <updated>1539002870257</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Disabled offline navigation">
+      <created>1539007034420</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1539007034420</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Disabled offline navigation">
+      <created>1539007140318</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1539007140318</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="57741000" />
+    <option name="totallyTimeSpent" value="58636000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="807" extended-state="0" />
@@ -361,7 +385,8 @@
     <MESSAGE value="Updated to latest CAPtain.js version" />
     <MESSAGE value="Updated clients to get server ref from saliva" />
     <MESSAGE value="Update to latest Spiders.js version for Disconnect/Reconnect patch" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update to latest Spiders.js version for Disconnect/Reconnect patch" />
+    <MESSAGE value="Disabled offline navigation" />
+    <option name="LAST_COMMIT_MESSAGE" value="Disabled offline navigation" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -761,26 +786,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/server/server.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="217">
-          <caret line="92" selection-start-line="92" selection-end-line="92" />
-          <folding>
-            <element signature="e#0#52#0" expanded="true" />
-            <element signature="n#!!block;n#constructor#0;n#OnwardServer#0" expanded="true" />
-            <element signature="n#!!block;n#registerPublicClient#0;n#OnwardServer#0" expanded="true" />
-            <element signature="n#!!block;n#registerPrivateClient#0;n#OnwardServer#0" expanded="true" />
-            <element signature="e#4738#4953#0" expanded="true" />
-            <element signature="e#4800#4942#0" expanded="true" />
-            <element signature="e#4866#4927#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/data/SlideShow.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="793">
-          <caret line="54" column="10" selection-start-line="54" selection-start-column="10" selection-end-line="54" selection-end-column="10" />
+        <state relative-caret-position="885">
+          <caret line="59" column="31" selection-start-line="59" selection-start-column="31" selection-end-line="59" selection-end-column="31" />
           <folding>
             <element signature="n#!!block;n#constructor#0;n#SlideShow#0" expanded="true" />
             <element signature="n#!!block;n#slideChange#0;n#SlideShow#0" expanded="true" />
@@ -791,31 +800,15 @@
             <element signature="e#895#930#0" expanded="true" />
             <element signature="n#!!block;n#goLeft#0;n#SlideShow#0" expanded="true" />
             <element signature="e#1043#1070#0" expanded="true" />
+            <element signature="n#!!block;n#goRight#0;n#SlideShow#0" expanded="true" />
             <element signature="e#1211#1238#0" expanded="true" />
-            <element signature="n#!!block;n#onChange#0;n#SlideShow#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/client/PrivateClient.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="17" column="10" selection-start-line="17" selection-start-column="10" selection-end-line="17" selection-end-column="10" />
-          <folding>
-            <element signature="e#0#53#0" expanded="true" />
-            <element signature="e#767#1587#0" expanded="true" />
-            <element signature="e#1250#1476#0" expanded="true" />
-            <element signature="e#1527#1543#0" expanded="true" />
-            <element signature="n#!!block;n#gotoSlide#0;n#PrivateClient#0" expanded="true" />
-            <element signature="n#!!block;n#showQuestions#0;n#PrivateClient#0" expanded="true" />
-            <element signature="e#2388#2954#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/client/PublicClient.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
+        <state relative-caret-position="125">
           <caret line="15" column="10" selection-start-line="15" selection-start-column="10" selection-end-line="15" selection-end-column="10" />
           <folding>
             <element signature="e#0#46#0" expanded="true" />
@@ -823,6 +816,49 @@
             <element signature="e#860#1086#0" expanded="true" />
             <element signature="n#!!block;n#gotoSlide#0;n#PublicClient#0" expanded="true" />
             <element signature="n#!!block;n#showQuestions#0;n#PublicClient#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/server/server.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="283">
+          <caret line="106" column="39" selection-start-line="106" selection-start-column="39" selection-end-line="106" selection-end-column="39" />
+          <folding>
+            <element signature="e#0#52#0" expanded="true" />
+            <element signature="n#!!block;n#injectHTML#0" expanded="true" />
+            <element signature="n#style#0;n#button#0;n#li#0;n#ul#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#ul#0;n#li#1;n#ul#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#button#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#button#1;n#!!top" expanded="true" />
+            <element signature="n#!!block;n#constructor#0;n#OnwardServer#0" expanded="true" />
+            <element signature="n#!!block;n#registerPublicClient#0;n#OnwardServer#0" expanded="true" />
+            <element signature="n#!!block;n#registerPrivateClient#0;n#OnwardServer#0" expanded="true" />
+            <element signature="n#!!block;n#slideChange#0;n#OnwardServer#0" expanded="true" />
+            <element signature="e#4215#4430#0" expanded="true" />
+            <element signature="e#4277#4419#0" expanded="true" />
+            <element signature="e#4343#4404#0" expanded="true" />
+            <element signature="e#4738#4953#0" expanded="true" />
+            <element signature="e#4800#4942#0" expanded="true" />
+            <element signature="e#4866#4927#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/client/PrivateClient.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="141">
+          <caret line="16" column="8" selection-start-line="16" selection-start-column="8" selection-end-line="16" selection-end-column="8" />
+          <folding>
+            <element signature="e#0#53#0" expanded="true" />
+            <element signature="e#767#1587#0" expanded="true" />
+            <element signature="e#1250#1476#0" expanded="true" />
+            <element signature="e#1527#1543#0" expanded="true" />
+            <element signature="e#1578#1618#0" expanded="true" />
+            <element signature="e#1696#1744#0" expanded="true" />
+            <element signature="n#!!block;n#gotoSlide#0;n#PrivateClient#0" expanded="true" />
+            <element signature="n#!!block;n#showQuestions#0;n#PrivateClient#0" expanded="true" />
+            <element signature="e#2388#2954#0" expanded="true" />
           </folding>
         </state>
       </provider>

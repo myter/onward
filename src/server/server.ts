@@ -29,7 +29,7 @@ function injectHTML(bundlePath,sourceHTMLPath,targetHTMLPath){
         '    <li><ul style="margin-left: 1em" id="questions"></ul></li> \n' +
         '  </ul>\n' +
         ' <button data-target="slide-out" class="sidenav-trigger"  style="position:absolute;right:0;top:0" onclick="$(\'.sidenav\').sidenav();"><i class="material-icons">menu</i></button> \n'+'' +
-        ' <button id="disconnectButton" data-target="slide-out" class="sidenav-trigger" style="position:absolute;right:2em;top:0" ><i class="material-icons">offline_bolt</i></button> \n')
+        ' <button id="disconnectButton" style="position:absolute;right:2em;top:0" ><i class="material-icons">offline_bolt</i></button> \n')
     $('head').prepend('<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">')
     $('head').prepend('<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">')
     $('body').append('<script src='+bundlePath+' />\n')
@@ -101,6 +101,11 @@ export class OnwardServer extends CAPplication{
                 })
             })
         })
+    }
+
+    goOffline(){
+        delete this.slideShow.listeners
+        return this.libs.thaw(this.slideShow as any)
     }
 }
 

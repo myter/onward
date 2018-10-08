@@ -56,6 +56,9 @@ export class SlideShow extends Consistent{
     }
 
     onChange(listener : Function){
+        if(!this.listeners){
+            this.listeners = []
+        }
         this.listeners.push(listener)
     }
 }

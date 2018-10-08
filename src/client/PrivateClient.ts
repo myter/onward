@@ -31,8 +31,16 @@ export class PrivateClient extends CAPplication{
                 this.questionList.newQuestion(question)
                 $("#questionText").val('')
             })
-            $("disconnectButton").on('click',()=>{
-
+            $("#disconnectButton").on('click',()=>{
+                console.log("Requesting from server")
+                this.server.goOffline().then((slideShow : SlideShow)=>{
+                    console.log("Got back available version of slideshow")
+                    this.slideShow = slideShow
+                    this.slideShow.onChange(()=>{
+                        console.log("CAPTURED LOCAL CHANGE YO !!!")
+                        this.gotoSlide(this.slideShow.currentSlideH,this.slideShow.currentSlideV)
+                    })
+                })
             })
             this.showQuestions()
         })
