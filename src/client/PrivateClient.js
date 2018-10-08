@@ -6,6 +6,7 @@ class PrivateClient extends spiders_captain_1.CAPplication {
         super();
         //TODO => put in config
         this.server = this.libs.buffRemote("saliva.soft.vub.ac.be", 8000);
+        //this.server = (this.libs as any).buffRemote("127.0.0.1",8000);
         this.server.registerPrivateClient(this, "TODO").then((ret) => {
             let [slideShow, questionList] = ret;
             this.questionList = questionList;
@@ -19,6 +20,8 @@ class PrivateClient extends spiders_captain_1.CAPplication {
                 let question = new Questions_1.Question(text);
                 this.questionList.newQuestion(question);
                 $("#questionText").val('');
+            });
+            $("disconnectButton").on('click', () => {
             });
             this.showQuestions();
         });
