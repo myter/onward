@@ -37468,17 +37468,17 @@ class ActorSTDLib {
     reflectOnObject(object) {
         return object[MOP_1.SpiderObjectMirror.mirrorAccessKey];
     }
-    serveApp(pathToHtml, pathToClientScript, bundleName, httpPort) {
+    serveApp(pathToHtml, pathToClientScript, bundleName, httpPort, resourceURL, pathToResource) {
         var express = require('express');
         let path = require('path');
         let resolve = path.resolve;
         var app = express();
         var http = require('http').Server(app);
-        //app.engine('html', require('ejs').renderFile)
-        //app.set('view engine', 'ejs')
+        if (resourceURL) {
+            app.use(resourceURL, express.static(resolve(pathToResource)));
+        }
         app.get('/', (req, res) => {
             res.sendFile(resolve(pathToHtml));
-            //res.render(resolve(pathToHtml),{test: "foo"})
         });
         let htmlDir = path.dirname(resolve(pathToHtml));
         let bundlePath = htmlDir + "/" + bundleName;
@@ -38520,7 +38520,7 @@ class SocketHandler {
         this.owner = owner;
         this.disconnectedActors = [];
         this.pendingMessages = new Map();
-        this.fuckUpMessage = new Map();
+        this.tempMessage = new Map();
     }
     addDisconnected(actorId) {
         this.disconnectedActors.push(actorId);
@@ -38548,8 +38548,8 @@ class SocketHandler {
         connection.on('connect', () => {
             that.removeFromDisconnected(actorId, connection);
             //TODO To remove once solution found
-            if (that.fuckUpMessage.has(actorId)) {
-                that.fuckUpMessage.get(actorId).forEach((msg) => {
+            if (that.tempMessage.has(actorId)) {
+                that.tempMessage.get(actorId).forEach((msg) => {
                     that.sendMessage(actorId, msg);
                 });
             }
@@ -38558,9 +38558,11 @@ class SocketHandler {
             that.messageHandler.dispatch(data);
         });
         connection.on('disconnect', function () {
+            console.log("DISCONNECTED FROM " + actorId);
             that.addDisconnected(actorId);
         });
         connection.on('reconnect', function () {
+            console.log("RECONNECTED TO " + actorId);
             that.removeFromDisconnected(actorId, connection);
         });
     }
@@ -38581,12 +38583,12 @@ class SocketHandler {
         }
         else {
             //TODO TEMP
-            if (this.fuckUpMessage.has(actorId)) {
-                this.fuckUpMessage.get(actorId).push(msg);
+            if (this.tempMessage.has(actorId)) {
+                this.tempMessage.get(actorId).push(msg);
             }
             else {
                 var q = [msg];
-                this.fuckUpMessage.set(actorId, q);
+                this.tempMessage.set(actorId, q);
             }
             //throw new Error("Unable to send message to unknown actor (socket handler) in " + msg.fieldName + " to : " + actorId + " in : " + this.messageHandler.thisRef.ownerId)
         }
@@ -38605,9 +38607,6 @@ class ServerSocketManager extends CommMedium_1.CommMedium {
         this.socket.on('connection', (client) => {
             client.on('message', (data) => {
                 environment.messageHandler.dispatch(data, [], client);
-            });
-            client.on('close', () => {
-                //TODO
             });
         });
     }

@@ -34,10 +34,10 @@ function injectHTML(bundlePath, sourceHTMLPath, targetHTMLPath) {
     $('body').append('<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>\n');
     $('head').append('\n' +
         '\n' +
-        '<link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">\n' +
-        '<link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">\n' +
-        '<link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">\n' +
-        '<link rel="manifest" href="./site.webmanifest">\n' +
+        '<link rel="apple-touch-icon" sizes="180x180" href="public/apple-touch-icon.png">\n' +
+        '<link rel="icon" type="image/png" sizes="32x32" href="public/favicon-32x32.png">\n' +
+        '<link rel="icon" type="image/png" sizes="16x16" href="public/favicon-16x16.png">\n' +
+        '<link rel="manifest" href="public/site.webmanifest">\n' +
         '<meta name="msapplication-TileColor" content="#da532c">\n' +
         '<meta name="theme-color" content="#ffffff">\n' +
         '\n');
@@ -63,9 +63,9 @@ class OnwardServer extends spiders_captain_1.CAPplication {
             this.slideChange();
         });
         this.questionList = new Questions_1.QuestionList();
-        this.libs.serveApp("../client/private.html", "../client/PrivateClient.js", "privateBundle.js", 9999);
+        this.libs.serveApp("../client/private.html", "../client/PrivateClient.js", "privateBundle.js", 9999, '/public', '../public');
         console.log("Server listening on 9999 for private connection");
-        this.libs.serveApp("../client/public.html", "../client/PublicClient.js", "publicBundle.js", 8888);
+        this.libs.serveApp("../client/public.html", "../client/PublicClient.js", "publicBundle.js", 8888, '/public', '../public');
         console.log("Server listening on 8888 for public connection");
     }
     registerClient(clientRef) {
