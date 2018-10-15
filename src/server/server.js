@@ -39,7 +39,8 @@ function injectHTML(bundlePath, sourceHTMLPath, targetHTMLPath) {
 }
 class OnwardServer extends spiders_captain_1.CAPplication {
     constructor() {
-        super();
+        const config = require('./exampleConfig.json');
+        super(config.serverActorAddress, config.serverActorPort);
         this.clients = [];
         this.slideShow = new SlideShow_1.SlideShow((token) => {
             return new Promise((resolve, reject) => {
@@ -48,7 +49,7 @@ class OnwardServer extends spiders_captain_1.CAPplication {
                 });
             });
         });
-        this.config = require('./exampleConfig.json');
+        this.config = config;
         this.slideShow.onChange(() => {
             this.slideChange();
         });

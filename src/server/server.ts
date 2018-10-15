@@ -1,4 +1,4 @@
-import {CAPplication, Consistent, Eventual, FarRef, mutating} from "spiders.captain";
+import {CAPplication, Consistent, Eventual, FarRef, mutating,SpiderActorMirror} from "spiders.captain";
 import * as fs from "fs";
 import {SlideShow} from "../data/SlideShow";
 import {QuestionList} from "../data/Questions";
@@ -44,10 +44,11 @@ export class OnwardServer extends CAPplication{
     clients             : Array<FarRef<Client>>
     slideShow           : SlideShow
     questionList        : QuestionList
-    config              : {masterLogin : string,masterPassword : string,tokenKey : string}
+    config              : {serverActorAddress : string, serverActorPort : number, masterLogin : string,masterPassword : string,tokenKey : string}
 
     constructor(){
-        super()
+        const config            = require('./exampleConfig.json')
+        super(config.serverActorAddress,config.serverActorPort)
         this.clients            = []
         this.slideShow          = new SlideShow((token)=>{
             return new Promise((resolve,reject)=>{
@@ -56,7 +57,7 @@ export class OnwardServer extends CAPplication{
                 })
             }) as Promise<boolean>
         });
-        this.config             = require('./exampleConfig.json')
+        this.config             = config
         this.slideShow.onChange(()=>{
             this.slideChange()
         });
