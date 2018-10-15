@@ -5,5 +5,7 @@
   "serverHTMLSlavePort"  : "8888",
   "masterLogin"          : "master",
   "masterPassword"       : "master",
-  "tokenKey"             : "asecrettokenkey"
+  "tokenKey"             : "asecrettokenkey",
+  "votesPerClient"       : 2,
+  "questionsPerClient"   : 2
 }

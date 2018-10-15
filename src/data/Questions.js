@@ -19,10 +19,16 @@ class Question extends spiders_captain_1.Eventual {
     incVote() {
         this.votes += 1;
     }
+    decVote() {
+        this.votes -= 1;
+    }
 }
 __decorate([
     spiders_captain_1.mutating
 ], Question.prototype, "incVote", null);
+__decorate([
+    spiders_captain_1.mutating
+], Question.prototype, "decVote", null);
 exports.Question = Question;
 class QuestionList extends spiders_captain_1.Eventual {
     constructor() {

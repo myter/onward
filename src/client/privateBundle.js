@@ -44822,18 +44822,24 @@ reveal.configure({ controls: false, keyboard: false });
 class Client extends spiders_captain_1.CAPplication {
     constructor() {
         super();
-        let config = require("../server/exampleConfig");
-        this.server = this.libs.buffRemote(config.serverActorAddress, config.serverActorPort);
+        this.config = require("../server/exampleConfig");
+        this.votes = [];
+        this.created = 0;
+        this.server = this.libs.buffRemote(this.config.serverActorAddress, this.config.serverActorPort);
         this.server.registerClient(this).then(([slideShow, questionList]) => {
             this.slideShow = slideShow;
             this.questionList = questionList;
             this.questionList.onCommit(this.showQuestions.bind(this));
             this.questionList.onTentative(this.showQuestions.bind(this));
             $("#submitQuestion").on('click', () => {
-                let text = $("#questionText").val();
-                let question = new Questions_1.Question(text);
-                this.questionList.newQuestion(question);
-                $("#questionText").val('');
+                if (this.created < this.config.questionsPerClient) {
+                    let text = $("#questionText").val();
+                    let question = new Questions_1.Question(text);
+                    this.votes.push(question.id);
+                    this.questionList.newQuestion(question);
+                    $("#questionText").val('');
+                    this.created++;
+                }
             });
             this.showQuestions();
         });
@@ -44847,9 +44853,23 @@ class Client extends spiders_captain_1.CAPplication {
         questions.sort((q1, q2) => {
             return q1.votes - q2.votes;
         });
+        questions.reverse();
         questions.forEach((q) => {
-            $("#questions").append('<li><p class="flow-text">' + q.text + '</p></li>');
+            if (this.votes.includes(q.id)) {
+                $("#questions").append('<li><div class="row"><div class="col s9"><p class="flow-text">' + q.text + '</p></div><div class="col s2"><a class="btn-floating btn-large teal" id="' + q.id + '">' + q.votes + '</a></div></div></li>');
+            }
+            else {
+                $("#questions").append('<li><div class="row"><div class="col s9"><p class="flow-text">' + q.text + '</p></div><div class="col s2"><a class="btn-floating btn-large teal lighten-5" id="' + q.id + '">' + q.votes + '</a></div></div></li>');
+            }
             $("#questions").append('<li><div class="divider"></div></li>');
+            $('#' + q.id).on('click', () => {
+                this.votes.push(q.id);
+                if (this.votes.length > this.config.votesPerClient) {
+                    let toDecId = this.votes.shift();
+                    this.questionList.questions.get(toDecId).decVote();
+                }
+                q.incVote();
+            });
         });
     }
 }
@@ -44939,10 +44959,16 @@ class Question extends spiders_captain_1.Eventual {
     incVote() {
         this.votes += 1;
     }
+    decVote() {
+        this.votes -= 1;
+    }
 }
 __decorate([
     spiders_captain_1.mutating
 ], Question.prototype, "incVote", null);
+__decorate([
+    spiders_captain_1.mutating
+], Question.prototype, "decVote", null);
 exports.Question = Question;
 class QuestionList extends spiders_captain_1.Eventual {
     constructor() {
@@ -45049,7 +45075,9 @@ module.exports={
   "serverHTMLSlavePort"  : "8888",
   "masterLogin"          : "master",
   "masterPassword"       : "master",
-  "tokenKey"             : "asecrettokenkey"
+  "tokenKey"             : "asecrettokenkey",
+  "votesPerClient"       : 2,
+  "questionsPerClient"   : 2
 }
 },{}],244:[function(require,module,exports){
 

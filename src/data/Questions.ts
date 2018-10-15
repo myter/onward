@@ -19,6 +19,11 @@ export class Question extends Eventual{
     incVote(){
         this.votes += 1
     }
+
+    @mutating
+    decVote(){
+        this.votes -= 1
+    }
 }
 
 export class QuestionList extends Eventual{
