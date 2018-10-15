@@ -1,9 +1,9 @@
-import {PublicClient} from "../client/PublicClient";
 import {CAPplication, Consistent, Eventual, FarRef, mutating} from "spiders.captain";
-import {PrivateClient} from "../client/PrivateClient";
 import * as fs from "fs";
 import {SlideShow} from "../data/SlideShow";
 import {QuestionList} from "../data/Questions";
+import {Client} from "../client/Client";
+import {sign,verify} from 'jsonwebtoken'
 
 function injectHTML(bundlePath,sourceHTMLPath,targetHTMLPath){
     var jsdom = require("jsdom").JSDOM
@@ -40,23 +40,23 @@ function injectHTML(bundlePath,sourceHTMLPath,targetHTMLPath){
         });
 }
 
-
-
-
-
-
-//TODO massive overlap between private and public client, probably some smarter way to deal with it then the way it is now
 export class OnwardServer extends CAPplication{
-    publicClients       : Array<FarRef<PublicClient>>
-    privateClients      : Array<FarRef<PrivateClient>>
+    clients             : Array<FarRef<Client>>
     slideShow           : SlideShow
     questionList        : QuestionList
+    config              : {masterLogin : string,masterPassword : string,tokenKey : string}
 
     constructor(){
         super()
-        this.publicClients      = []
-        this.privateClients     = []
-        this.slideShow          = new SlideShow();
+        this.clients            = []
+        this.slideShow          = new SlideShow((token)=>{
+            return new Promise((resolve,reject)=>{
+                verify(token,this.config.tokenKey,(err)=>{
+                    resolve(!err)
+                })
+            }) as Promise<boolean>
+        });
+        this.config             = require('./exampleConfig.json')
         this.slideShow.onChange(()=>{
             this.slideChange()
         });
@@ -67,45 +67,46 @@ export class OnwardServer extends CAPplication{
         console.log("Server listening on 8888 for public connection");
     }
 
-    //TODO check browser fingerprint to ensure no spamming ?
-    registerPublicClient(clientRef){
-        console.log("Public client registered")
-        this.publicClients.push(clientRef);
-        (this.slideShow.currentSlideH as any).then((h)=>{
-            (this.slideShow.currentSlideV as any).then((v)=>{
-                clientRef.gotoSlide(h,v)
-            })
-        })
-        return this.questionList
-    }
-
-    //TODO check credentials
-    registerPrivateClient(clientRef,credential){
-        console.log("Private client registered")
-        this.privateClients.push(clientRef)
+    registerClient(clientRef : FarRef<Client>){
+        this.clients.push(clientRef)
+        this.changeSlideForClient(clientRef)
         return [this.slideShow,this.questionList]
     }
 
+    loginMaster(login : string, password : string){
+        let expectedLogin       = this.config.masterLogin
+        let expectedPassword    = this.config.masterPassword
+        let tokenKey            = this.config.tokenKey
+        if(expectedLogin == login && expectedPassword == password){
+            console.log("Master logged in ")
+            return sign({},tokenKey)
+        }
+        else{
+            throw new Error("Invalid username/password")
+        }
+    }
+
     slideChange(){
-        this.publicClients.forEach((client : FarRef<PublicClient>)=>{
-            (this.slideShow.currentSlideH as any).then((h)=>{
-                (this.slideShow.currentSlideV as any).then((v)=>{
-                    client.gotoSlide(h,v)
-                })
-            })
-        })
-        this.privateClients.forEach((client : FarRef<PrivateClient>)=>{
-            (this.slideShow.currentSlideH as any).then((h)=>{
-                (this.slideShow.currentSlideV as any).then((v)=>{
-                    client.gotoSlide(h,v)
-                })
+        this.clients.forEach(this.changeSlideForClient.bind(this))
+    }
+
+    changeSlideForClient(client : FarRef<Client>){
+        (this.slideShow.currentSlideH as any).then((h)=>{
+            (this.slideShow.currentSlideV as any).then((v)=>{
+                client.gotoSlide(h,v)
             })
         })
     }
 
-    goOffline(){
-        delete this.slideShow.listeners
-        return this.libs.thaw(this.slideShow as any)
+    goOffline(token){
+        return new Promise((resolve)=>{
+            verify(token,this.config.tokenKey,(err)=>{
+                if(!err){
+                    delete this.slideShow.listeners
+                    resolve(this.libs.thaw(this.slideShow as any))
+                }
+            })
+        })
     }
 }
 

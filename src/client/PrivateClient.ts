@@ -1,94 +1,70 @@
-import {CAPplication, FarRef} from "spiders.captain";
-import {OnwardServer} from "../server/server";
+import {Client} from "./Client";
 import {SlideShow} from "../data/SlideShow";
-import {Question, QuestionList} from "../data/Questions";
 
-let reveal : RevealStatic = (window as any).Reveal;
-reveal.configure({controls: false,keyboard : false})
-
-export class PrivateClient extends CAPplication{
-    server      : FarRef<OnwardServer>
-    slideShow   : FarRef<SlideShow>
-    questionList : QuestionList
+export class MasterClient extends Client{
+    token
 
     constructor(){
         super()
-        //TODO => put in config
-        this.server = (this.libs as any).buffRemote("134.184.43.156",8000);
-        //this.server = (this.libs as any).buffRemote("127.0.0.1",8000);
-        (this.server.registerPrivateClient(this,"TODO") as any).then((ret)=>{
-            let [slideShow ,questionList] = ret
-            this.slideShow  = slideShow
-            this.questionList = questionList
-            /*Reveal.addEventListener( 'slidechanged', function( event ) {
-                slideShow.slideChange(event.indexh,event.indexv)
-            })*/
-            this.questionList.onCommit(this.showQuestions.bind(this))
-            this.questionList.onTentative(this.showQuestions.bind(this))
-            $("#submitQuestion").on('click',()=>{
-                let text        = $("#questionText").val()
-                let question    = new Question(text)
-                this.questionList.newQuestion(question)
-                $("#questionText").val('')
-            })
-            $("#disconnectButton").on('click',()=>{
-                console.log("Requesting from server")
-                this.server.goOffline().then((slideShow : SlideShow)=>{
-                    console.log("Got back available version of slideshow")
-                    this.slideShow = slideShow
-                    this.slideShow.onChange(()=>{
-                        console.log("CAPTURED LOCAL CHANGE YO !!!")
-                        this.gotoSlide(this.slideShow.currentSlideH,this.slideShow.currentSlideV)
-                    })
+        $("#disconnectButton").on('click',()=>{
+            this.server.goOffline(this.token).then((slideShow : SlideShow)=>{
+                this.slideShow = slideShow
+                this.slideShow.onChange(()=>{
+                    this.gotoSlide(this.slideShow.currentSlideH,this.slideShow.currentSlideV)
                 })
             })
-            this.showQuestions()
         })
     }
 
-    gotoSlide(slideH,slideV){
-        let reveal : RevealStatic = (window as any).Reveal;
-        reveal.slide(slideH,slideV)
+    promptForCred(){
+        const login = window.prompt("Login")
+        const password = window.prompt("Password")
+        return [login,password]
     }
 
-    showQuestions(){
-        $("#questions").empty()
-        let questions = Array.from(this.questionList.questions.values())
-        questions.sort((q1,q2)=>{
-            return q1.votes - q2.votes
-        })
-        questions.forEach((q)=>{
-            $("#questions").append('<li><p class="flow-text">'+q.text+'</p></li>')
-            $("#questions").append('<li><div class="divider"></div></li>')
+    login(){
+        const [login,password] = this.promptForCred()
+        this.server.loginMaster(login,password).then((token)=>{
+            this.token = token
+        }).catch(()=>{
+            window.alert("Wrong login or password")
+            this.login()
         })
     }
-};
 
-//TODO for some reason this private client code can be called twice by browser somtimes ?
+    changeSlide(direction : string){
+        this.slideShow.go(direction,this.token)
+    }
+}
+
+//This script might be called multiple times by browser, ensure that only a single client actor is created
 if(!((window as any).clientInit)){
     (window as any).clientInit = true
-    let client = new PrivateClient();
+    let client = new MasterClient();
+    //Ideally this would be an html page on its own
+    client.login()
     $(document).keydown(function(e) {
         switch(e.which) {
-            case 37: // left
-                client.slideShow.goLeft()
-                break;
+            case 37: //left
+                client.changeSlide(SlideShow.DIRECTION_LEFT)
+                break
 
-            case 38: // up
-                client.slideShow.goUp()
-                break;
+            case 38: //up
+                client.changeSlide(SlideShow.DIRECTION_UP)
+                break
 
-            case 39: // right
-                client.slideShow.goRight()
-                break;
+            case 39: //right
+                client.changeSlide(SlideShow.DIRECTION_RIGHT)
+                break
 
-            case 40: // down
-                client.slideShow.goDown()
-                break;
+            case 40: //down
+                client.changeSlide(SlideShow.DIRECTION_DOWN)
+                break
 
-            default: return; // exit this handler for other keys
+            default:
+                return
         }
-        e.preventDefault(); // prevent the default action (scroll / move caret)
+        e.preventDefault();
     });
 }
 

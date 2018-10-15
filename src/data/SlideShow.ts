@@ -1,18 +1,23 @@
 import {Consistent} from "spiders.captain";
 
 export class SlideShow extends Consistent{
+    static DIRECTION_UP     = "up"
+    static DIRECTION_DOWN   = "down"
+    static DIRECTION_LEFT   = "left"
+    static DIRECTION_RIGHT  = "right"
     currentSlideH : number
     currentSlideV : number
-    listeners    : Array<Function>
+    listeners     : Array<Function>
+    checkToken    : (string) => Promise<boolean>
 
-    constructor(){
+    constructor(checkToken : (string) => Promise<boolean>){
         super()
         this.currentSlideH      = 0
         this.currentSlideV      = 0
         this.listeners          = []
+        this.checkToken         = checkToken
     }
 
-    //TODO will need to be more complex than just nextslide
     slideChange(indexH,indexV){
         this.currentSlideH = indexH
         this.currentSlideV = indexV
@@ -21,7 +26,30 @@ export class SlideShow extends Consistent{
         })
     }
 
-    goUp() {
+    go(direction : string,token){
+        this.checkToken(token).then((ok)=>{
+            if(ok){
+                switch(direction){
+                    case SlideShow.DIRECTION_UP:
+                        this.goUp()
+                        break
+                    case SlideShow.DIRECTION_DOWN:
+                        this.goDown()
+                        break
+                    case SlideShow.DIRECTION_RIGHT:
+                        this.goRight()
+                        break
+                    case SlideShow.DIRECTION_LEFT:
+                        this.goLeft()
+                        break
+                    default :
+                        throw new Error("Unknown Slide direction change: " + direction)
+                }
+            }
+        })
+    }
+
+    private goUp() {
         if(this.currentSlideV > 0){
             this.currentSlideV -= 1
             this.listeners.forEach((f)=>{
@@ -30,14 +58,14 @@ export class SlideShow extends Consistent{
         }
     }
 
-    goDown(){
+    private goDown(){
         this.currentSlideV = this.currentSlideV + 1
         this.listeners.forEach((f)=>{
             f()
         })
     }
 
-    goLeft(){
+    private goLeft(){
         if(this.currentSlideH > 0){
             this.currentSlideV = 0
             this.currentSlideH -= 1
@@ -47,7 +75,7 @@ export class SlideShow extends Consistent{
         }
     }
 
-    goRight(){
+    private goRight(){
         this.currentSlideV = 0
         this.currentSlideH += 1
         this.listeners.forEach((f)=>{

@@ -1,82 +1,61 @@
 Object.defineProperty(exports, "__esModule", { value: true });
-const spiders_captain_1 = require("spiders.captain");
-const Questions_1 = require("../data/Questions");
-let reveal = window.Reveal;
-reveal.configure({ controls: false, keyboard: false });
-class PrivateClient extends spiders_captain_1.CAPplication {
+const Client_1 = require("./Client");
+const SlideShow_1 = require("../data/SlideShow");
+class MasterClient extends Client_1.Client {
     constructor() {
         super();
-        //TODO => put in config
-        this.server = this.libs.buffRemote("134.184.43.156", 8000);
-        //this.server = (this.libs as any).buffRemote("127.0.0.1",8000);
-        this.server.registerPrivateClient(this, "TODO").then((ret) => {
-            let [slideShow, questionList] = ret;
-            this.slideShow = slideShow;
-            this.questionList = questionList;
-            /*Reveal.addEventListener( 'slidechanged', function( event ) {
-                slideShow.slideChange(event.indexh,event.indexv)
-            })*/
-            this.questionList.onCommit(this.showQuestions.bind(this));
-            this.questionList.onTentative(this.showQuestions.bind(this));
-            $("#submitQuestion").on('click', () => {
-                let text = $("#questionText").val();
-                let question = new Questions_1.Question(text);
-                this.questionList.newQuestion(question);
-                $("#questionText").val('');
-            });
-            $("#disconnectButton").on('click', () => {
-                console.log("Requesting from server");
-                this.server.goOffline().then((slideShow) => {
-                    console.log("Got back available version of slideshow");
-                    this.slideShow = slideShow;
-                    this.slideShow.onChange(() => {
-                        console.log("CAPTURED LOCAL CHANGE YO !!!");
-                        this.gotoSlide(this.slideShow.currentSlideH, this.slideShow.currentSlideV);
-                    });
+        $("#disconnectButton").on('click', () => {
+            this.server.goOffline(this.token).then((slideShow) => {
+                this.slideShow = slideShow;
+                this.slideShow.onChange(() => {
+                    this.gotoSlide(this.slideShow.currentSlideH, this.slideShow.currentSlideV);
                 });
             });
-            this.showQuestions();
         });
     }
-    gotoSlide(slideH, slideV) {
-        let reveal = window.Reveal;
-        reveal.slide(slideH, slideV);
+    promptForCred() {
+        const login = window.prompt("Login");
+        const password = window.prompt("Password");
+        return [login, password];
     }
-    showQuestions() {
-        $("#questions").empty();
-        let questions = Array.from(this.questionList.questions.values());
-        questions.sort((q1, q2) => {
-            return q1.votes - q2.votes;
+    login() {
+        const [login, password] = this.promptForCred();
+        this.server.loginMaster(login, password).then((token) => {
+            this.token = token;
+        }).catch(() => {
+            window.alert("Wrong login or password");
+            this.login();
         });
-        questions.forEach((q) => {
-            $("#questions").append('<li><p class="flow-text">' + q.text + '</p></li>');
-            $("#questions").append('<li><div class="divider"></div></li>');
-        });
+    }
+    changeSlide(direction) {
+        this.slideShow.go(direction, this.token);
     }
 }
-exports.PrivateClient = PrivateClient;
-;
-//TODO for some reason this private client code can be called twice by browser somtimes ?
+exports.MasterClient = MasterClient;
+//This script might be called multiple times by browser, ensure that only a single client actor is created
 if (!(window.clientInit)) {
     window.clientInit = true;
-    let client = new PrivateClient();
+    let client = new MasterClient();
+    //Ideally this would be an html page on its own
+    client.login();
     $(document).keydown(function (e) {
         switch (e.which) {
-            case 37: // left
-                client.slideShow.goLeft();
+            case 37: //left
+                client.changeSlide(SlideShow_1.SlideShow.DIRECTION_LEFT);
                 break;
-            case 38: // up
-                client.slideShow.goUp();
+            case 38: //up
+                client.changeSlide(SlideShow_1.SlideShow.DIRECTION_UP);
                 break;
-            case 39: // right
-                client.slideShow.goRight();
+            case 39: //right
+                client.changeSlide(SlideShow_1.SlideShow.DIRECTION_RIGHT);
                 break;
-            case 40: // down
-                client.slideShow.goDown();
+            case 40: //down
+                client.changeSlide(SlideShow_1.SlideShow.DIRECTION_DOWN);
                 break;
-            default: return; // exit this handler for other keys
+            default:
+                return;
         }
-        e.preventDefault(); // prevent the default action (scroll / move caret)
+        e.preventDefault();
     });
 }
 //# sourceMappingURL=PrivateClient.js.map
