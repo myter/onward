@@ -34,6 +34,15 @@ function injectHTML(bundlePath,sourceHTMLPath,targetHTMLPath){
     $('head').prepend('<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">')
     $('body').append('<script src='+bundlePath+' />\n')
     $('body').append('<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>\n')
+    $('head').append('\n' +
+        '\n' +
+        '<link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">\n' +
+        '<link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">\n' +
+        '<link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">\n' +
+        '<link rel="manifest" href="./site.webmanifest">\n' +
+        '<meta name="msapplication-TileColor" content="#da532c">\n' +
+        '<meta name="theme-color" content="#ffffff">\n' +
+        '\n')
     fs.writeFile(targetHTMLPath, window.document.documentElement.outerHTML,
         function (error){
             if (error) throw error;
