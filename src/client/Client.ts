@@ -4,7 +4,7 @@ import {Question, QuestionList} from "../data/Questions";
 import {SlideShow} from "../data/SlideShow";
 
 const reveal : RevealStatic = (window as any).Reveal;
-reveal.configure({controls: false,keyboard : false})
+reveal.configure({controls: false,keyboard : false,touch: false})
 
 export class Client extends CAPplication{
     server          : FarRef<OnwardServer>

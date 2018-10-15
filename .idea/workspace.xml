@@ -2,24 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3085cca2-94b5-4a46-83ef-0af56510d516" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/android-chrome-192x192.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/public/android-chrome-192x192.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/android-chrome-512x512.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/public/android-chrome-512x512.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/apple-touch-icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/public/apple-touch-icon.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/browserconfig.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/public/browserconfig.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/favicon-16x16.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/public/favicon-16x16.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/favicon-32x32.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/public/favicon-32x32.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/favicon.ico" beforeDir="false" afterPath="$PROJECT_DIR$/src/public/favicon.ico" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/mstile-150x150.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/public/mstile-150x150.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/private.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/private.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/privateBundle.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/privateBundle.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/public.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/public.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/publicBundle.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/publicBundle.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/site.webmanifest" beforeDir="false" afterPath="$PROJECT_DIR$/src/public/site.webmanifest" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/server.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/server.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/server.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/server.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/server.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/Client.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/Client.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/Client.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/Client.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/Client.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/Client.ts" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -36,7 +21,7 @@
       <file leaf-file-name="server.ts" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/server/server.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="341">
+            <state relative-caret-position="632">
               <caret line="75" column="133" selection-start-line="75" selection-start-column="133" selection-end-line="75" selection-end-column="133" />
               <folding>
                 <element signature="e#0#85#0" expanded="true" />
@@ -50,7 +35,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="package.json" pinned="false" current-in-tab="true">
+      <file leaf-file-name="package.json" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/package.json">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="60">
@@ -71,13 +56,14 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Client.ts" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Client.ts" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/client/Client.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="18" column="59" selection-start-line="18" selection-start-column="59" selection-end-line="18" selection-end-column="59" />
+            <state relative-caret-position="90">
+              <caret line="6" column="65" selection-start-line="6" selection-start-column="65" selection-end-line="6" selection-end-column="65" />
               <folding>
                 <element signature="e#0#53#0" expanded="true" />
+                <element signature="n#!!block;n#constructor#0;n#Client#0" expanded="true" />
                 <element signature="e#834#1384#0" expanded="true" />
                 <element signature="e#1114#1340#0" expanded="true" />
                 <element signature="n#!!block;n#showQuestions#0;n#Client#0" expanded="true" />
@@ -146,10 +132,10 @@
         <option value="$PROJECT_DIR$/src/client/PrivateClient.ts" />
         <option value="$PROJECT_DIR$/src/data/Questions.ts" />
         <option value="$PROJECT_DIR$/src/server/exampleConfig.json" />
-        <option value="$PROJECT_DIR$/src/client/Client.ts" />
         <option value="$PROJECT_DIR$/src/server/server.ts" />
         <option value="$PROJECT_DIR$/node_modules/spiders.js/src/ActorSTDLib.js" />
         <option value="$PROJECT_DIR$/package.json" />
+        <option value="$PROJECT_DIR$/src/client/Client.ts" />
       </list>
     </option>
   </component>
@@ -288,7 +274,7 @@
       <workItem from="1538991524940" duration="12195000" />
       <workItem from="1539091792465" duration="4121000" />
       <workItem from="1539587227852" duration="5616000" />
-      <workItem from="1539597558917" duration="9738000" />
+      <workItem from="1539597558917" duration="10516000" />
     </task>
     <task id="LOCAL-00001" summary="First server-ready version">
       <created>1538991985156</created>
@@ -395,11 +381,18 @@
       <option name="project" value="LOCAL" />
       <updated>1539610419452</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Added favicon">
+      <created>1539612884426</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1539612884427</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="80912000" />
+    <option name="totallyTimeSpent" value="81690000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="807" extended-state="6" />
@@ -457,7 +450,8 @@
     <MESSAGE value="Single Client def + credentials" />
     <MESSAGE value="Adding server actor address + port to server constructor" />
     <MESSAGE value="Added voting functionality" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added voting functionality" />
+    <MESSAGE value="Added favicon" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added favicon" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -465,13 +459,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/server/server.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="28" column="61" selection-start-line="28" selection-start-column="61" selection-end-line="28" selection-end-column="61" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/client/PublicClient.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="210">
@@ -719,22 +706,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/client/Client.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="18" column="59" selection-start-line="18" selection-start-column="59" selection-end-line="18" selection-end-column="59" />
-          <folding>
-            <element signature="e#0#53#0" expanded="true" />
-            <element signature="e#834#1384#0" expanded="true" />
-            <element signature="e#1114#1340#0" expanded="true" />
-            <element signature="n#!!block;n#showQuestions#0;n#Client#0" expanded="true" />
-            <element signature="e#1590#1640#0" expanded="true" />
-            <element signature="e#1673#1842#0" expanded="true" />
-            <element signature="e#2015#2047#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/client/PublicClient.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="30">
@@ -763,16 +734,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/data/SlideShow.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" column="58" selection-start-line="12" selection-start-column="58" selection-end-line="12" selection-end-column="58" />
-          <folding>
-            <element signature="n#!!block;n#constructor#0;n#SlideShow#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/server/icon.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
@@ -789,9 +750,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/spiders.js/src/ActorSTDLib.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-421">
+          <folding>
+            <element signature="e#0#44#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/server/server.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="341">
+        <state relative-caret-position="632">
           <caret line="75" column="133" selection-start-line="75" selection-start-column="133" selection-end-line="75" selection-end-column="133" />
           <folding>
             <element signature="e#0#85#0" expanded="true" />
@@ -808,6 +778,33 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
           <caret line="4" column="29" selection-start-line="4" selection-start-column="29" selection-end-line="4" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/data/SlideShow.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="12" column="58" selection-start-line="12" selection-start-column="58" selection-end-line="12" selection-end-column="58" />
+          <folding>
+            <element signature="n#!!block;n#constructor#0;n#SlideShow#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/client/Client.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" column="65" selection-start-line="6" selection-start-column="65" selection-end-line="6" selection-end-column="65" />
+          <folding>
+            <element signature="e#0#53#0" expanded="true" />
+            <element signature="n#!!block;n#constructor#0;n#Client#0" expanded="true" />
+            <element signature="e#834#1384#0" expanded="true" />
+            <element signature="e#1114#1340#0" expanded="true" />
+            <element signature="n#!!block;n#showQuestions#0;n#Client#0" expanded="true" />
+            <element signature="e#1590#1640#0" expanded="true" />
+            <element signature="e#1673#1842#0" expanded="true" />
+            <element signature="e#2015#2047#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

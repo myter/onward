@@ -2,7 +2,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const spiders_captain_1 = require("spiders.captain");
 const Questions_1 = require("../data/Questions");
 const reveal = window.Reveal;
-reveal.configure({ controls: false, keyboard: false });
+reveal.configure({ controls: false, keyboard: false, touch: false });
 class Client extends spiders_captain_1.CAPplication {
     constructor() {
         super();
