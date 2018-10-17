@@ -4,6 +4,8 @@ const fs = require("fs");
 const SlideShow_1 = require("../data/SlideShow");
 const Questions_1 = require("../data/Questions");
 const jsonwebtoken_1 = require("jsonwebtoken");
+const BenchData_1 = require("../data/BenchData");
+const Stats = require('fast-stats').Stats;
 function injectHTML(bundlePath, sourceHTMLPath, targetHTMLPath) {
     var jsdom = require("jsdom").JSDOM;
     var htmlSource = fs.readFileSync(sourceHTMLPath, "utf8");
@@ -26,8 +28,11 @@ function injectHTML(bundlePath, sourceHTMLPath, targetHTMLPath) {
         '    <li><button style="margin-left: 30%;margin-top:2em" data-target="modal1" class="btn modal-trigger" onclick="$(\'.modal\').modal();">Add Question</button></li> \n' +
         '    <li><ul style="margin-left: 1em" id="questions"></ul></li> \n' +
         '  </ul>\n' +
-        ' <button data-target="slide-out" class="sidenav-trigger"  style="position:absolute;right:0;top:0" onclick="$(\'.sidenav\').sidenav();"><i class="material-icons">menu</i></button> \n' + '' +
-        ' <button id="disconnectButton" style="position:absolute;right:2em;top:0" ><i class="material-icons">offline_bolt</i></button> \n');
+        ' <a data-target="slide-out" class="sidenav-trigger"  style="position:absolute;right:0;top:0" onclick="$(\'.sidenav\').sidenav();"><i class="material-icons" style="font-size: 2vw">menu</i></a> \n' + '' +
+        ' <a id="disconnectButton" style="position:absolute;right:2vw;top:0;display: none" ><i class="material-icons" style="font-size: 2vw">offline_bolt</i></a> \n' +
+        ' <a id="benchButton" style="position:absolute;right:4vw;top:0;display: none" ><i class="material-icons" style="font-size: 2vw">timer</i></a> \n' +
+        '<container style="position:absolute;right:20vw;top:40vh;width:30vw;height:40vh"><canvas id="benchChartTC" style="display:none"></canvas></container>\n' +
+        '<container style="position:absolute;left:20vw;top:40vh;width:30vw;height:40vh"><canvas id="benchChartTLC"  style="display:none"></canvas></container>\n');
     $('head').prepend('<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">');
     $('head').prepend('<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">');
     $('body').append('<script src=' + bundlePath + ' />\n');
@@ -59,18 +64,25 @@ class OnwardServer extends spiders_captain_1.CAPplication {
             });
         });
         this.config = config;
+        this.benching = false;
         this.slideShow.onChange(() => {
             this.slideChange();
         });
         this.questionList = new Questions_1.QuestionList();
+        this.avTCVals = [];
+        this.avTLCVals = [];
+        this.cTCVals = [];
+        this.cTLCVals = [];
         this.libs.serveApp("../client/private.html", "../client/PrivateClient.js", "privateBundle.js", 9999, '/public', '../public');
         console.log("Server listening on 9999 for private connection");
         this.libs.serveApp("../client/public.html", "../client/PublicClient.js", "publicBundle.js", 8888, '/public', '../public');
         console.log("Server listening on 8888 for public connection");
     }
     registerClient(clientRef) {
+        //TODO check if benchmarking
         this.clients.push(clientRef);
         this.changeSlideForClient(clientRef);
+        this.sampleSizeChange();
         return [this.slideShow, this.questionList];
     }
     loginMaster(login, password) {
@@ -103,6 +115,50 @@ class OnwardServer extends spiders_captain_1.CAPplication {
                     resolve(this.libs.thaw(this.slideShow));
                 }
             });
+        });
+    }
+    sampleSizeChange() {
+        this.clients.forEach(((client) => {
+            client.updateSampleSize(this.clients.length);
+        }));
+    }
+    //TODO lock in sample size?
+    benchPressed() {
+        if (this.benching) {
+        }
+        else {
+            this.benchAvailable = new BenchData_1.BenchAvailable();
+            this.benchConsistent = new BenchData_1.BenchConsistent((changeStart) => {
+                let tc = Date.now() - changeStart;
+                this.newBenchValue(BenchData_1.CTC, tc);
+            });
+            this.clients.forEach((client) => {
+                client.startBench(this.benchAvailable, this.benchConsistent);
+            });
+        }
+    }
+    newBenchValue(type, value) {
+        let s = new Stats();
+        switch (type) {
+            case BenchData_1.AVTC:
+                this.avTCVals.push(value);
+                s.push(this.avTCVals);
+                break;
+            case BenchData_1.AVTLC:
+                this.avTLCVals.push(value);
+                s.push(this.avTLCVals);
+                break;
+            case BenchData_1.CTC:
+                this.cTCVals.push(value);
+                s.push(this.cTCVals);
+                break;
+            case BenchData_1.CTLC:
+                this.cTLCVals.push(value);
+                s.push(this.cTLCVals);
+                break;
+        }
+        this.clients.forEach((client) => {
+            client.newAverage(type, s.median(), 0);
         });
     }
 }

@@ -4,6 +4,8 @@ import {SlideShow} from "../data/SlideShow";
 import {QuestionList} from "../data/Questions";
 import {Client} from "../client/Client";
 import {sign,verify} from 'jsonwebtoken'
+import {AVTC, AVTLC, BenchAvailable, BenchConsistent, CTC, CTLC} from "../data/BenchData";
+const Stats = require('fast-stats').Stats
 
 function injectHTML(bundlePath,sourceHTMLPath,targetHTMLPath){
     var jsdom = require("jsdom").JSDOM
@@ -28,8 +30,11 @@ function injectHTML(bundlePath,sourceHTMLPath,targetHTMLPath){
         '    <li><button style="margin-left: 30%;margin-top:2em" data-target="modal1" class="btn modal-trigger" onclick="$(\'.modal\').modal();">Add Question</button></li> \n'+
         '    <li><ul style="margin-left: 1em" id="questions"></ul></li> \n' +
         '  </ul>\n' +
-        ' <button data-target="slide-out" class="sidenav-trigger"  style="position:absolute;right:0;top:0" onclick="$(\'.sidenav\').sidenav();"><i class="material-icons">menu</i></button> \n'+'' +
-        ' <button id="disconnectButton" style="position:absolute;right:2em;top:0" ><i class="material-icons">offline_bolt</i></button> \n')
+        ' <a data-target="slide-out" class="sidenav-trigger"  style="position:absolute;right:0;top:0" onclick="$(\'.sidenav\').sidenav();"><i class="material-icons" style="font-size: 2vw">menu</i></a> \n'+'' +
+        ' <a id="disconnectButton" style="position:absolute;right:2vw;top:0;display: none" ><i class="material-icons" style="font-size: 2vw">offline_bolt</i></a> \n'+
+        ' <a id="benchButton" style="position:absolute;right:4vw;top:0;display: none" ><i class="material-icons" style="font-size: 2vw">timer</i></a> \n'+
+        '<container style="position:absolute;right:20vw;top:40vh;width:30vw;height:40vh"><canvas id="benchChartTC" style="display:none"></canvas></container>\n' +
+        '<container style="position:absolute;left:20vw;top:40vh;width:30vw;height:40vh"><canvas id="benchChartTLC"  style="display:none"></canvas></container>\n')
     $('head').prepend('<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">')
     $('head').prepend('<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">')
     $('body').append('<script src='+bundlePath+' />\n')
@@ -53,7 +58,14 @@ export class OnwardServer extends CAPplication{
     clients             : Array<FarRef<Client>>
     slideShow           : SlideShow
     questionList        : QuestionList
+    benchAvailable      : BenchAvailable
+    benchConsistent     : BenchConsistent
+    benching            : boolean
     config              : {serverActorAddress : string, serverActorPort : number, masterLogin : string,masterPassword : string,tokenKey : string}
+    avTCVals            : Array<number>
+    avTLCVals           : Array<number>
+    cTCVals             : Array<number>
+    cTLCVals            : Array<number>
 
     constructor(){
         const config            = require('./exampleConfig.json')
@@ -67,10 +79,15 @@ export class OnwardServer extends CAPplication{
             }) as Promise<boolean>
         });
         this.config             = config
+        this.benching           = false
         this.slideShow.onChange(()=>{
             this.slideChange()
         });
         this.questionList       = new QuestionList();
+        this.avTCVals           = []
+        this.avTLCVals          = []
+        this.cTCVals            = []
+        this.cTLCVals           = [];
         (this.libs as any).serveApp("../client/private.html","../client/PrivateClient.js","privateBundle.js",9999,'/public','../public')
         console.log("Server listening on 9999 for private connection");
         (this.libs as any).serveApp("../client/public.html","../client/PublicClient.js","publicBundle.js",8888,'/public','../public')
@@ -78,8 +95,10 @@ export class OnwardServer extends CAPplication{
     }
 
     registerClient(clientRef : FarRef<Client>){
+        //TODO check if benchmarking
         this.clients.push(clientRef)
         this.changeSlideForClient(clientRef)
+        this.sampleSizeChange()
         return [this.slideShow,this.questionList]
     }
 
@@ -116,6 +135,55 @@ export class OnwardServer extends CAPplication{
                     resolve(this.libs.thaw(this.slideShow as any))
                 }
             })
+        })
+    }
+
+    sampleSizeChange(){
+        this.clients.forEach(((client : FarRef<Client>)=>{
+            client.updateSampleSize(this.clients.length)
+        }))
+    }
+
+
+    //TODO lock in sample size?
+    benchPressed(){
+        if(this.benching){
+
+        }
+        else{
+            this.benchAvailable     = new BenchAvailable()
+            this.benchConsistent    = new BenchConsistent((changeStart : number)=>{
+                let tc = Date.now() - changeStart
+                this.newBenchValue(CTC,tc)
+            })
+            this.clients.forEach((client : FarRef<Client>)=>{
+                client.startBench(this.benchAvailable,this.benchConsistent)
+            })
+        }
+    }
+
+    newBenchValue(type : number,value : number){
+        let s  = new Stats()
+        switch(type){
+            case AVTC:
+                this.avTCVals.push(value)
+                s.push(this.avTCVals)
+                break
+            case AVTLC:
+                this.avTLCVals.push(value)
+                s.push(this.avTLCVals)
+                break
+            case CTC:
+                this.cTCVals.push(value)
+                s.push(this.cTCVals)
+                break
+            case CTLC:
+                this.cTLCVals.push(value)
+                s.push(this.cTLCVals)
+                break
+        }
+        this.clients.forEach((client : FarRef<Client>)=>{
+            client.newAverage(type,s.median(),0)
         })
     }
 }

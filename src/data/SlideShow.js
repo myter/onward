@@ -8,13 +8,6 @@ class SlideShow extends spiders_captain_1.Consistent {
         this.listeners = [];
         this.checkToken = checkToken;
     }
-    slideChange(indexH, indexV) {
-        this.currentSlideH = indexH;
-        this.currentSlideV = indexV;
-        this.listeners.forEach((f) => {
-            f();
-        });
-    }
     go(direction, token) {
         this.checkToken(token).then((ok) => {
             if (ok) {
@@ -46,7 +39,7 @@ class SlideShow extends spiders_captain_1.Consistent {
         }
     }
     goDown() {
-        this.currentSlideV = this.currentSlideV + 1;
+        this.currentSlideV += 1;
         this.listeners.forEach((f) => {
             f();
         });

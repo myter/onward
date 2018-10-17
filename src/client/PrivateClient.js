@@ -4,7 +4,9 @@ const SlideShow_1 = require("../data/SlideShow");
 class MasterClient extends Client_1.Client {
     constructor() {
         super();
-        $("#disconnectButton").on('click', () => {
+        let disconnectButton = $("#disconnectButton");
+        let benchButton = $("#benchButton");
+        disconnectButton.on('click', () => {
             this.server.goOffline(this.token).then((slideShow) => {
                 this.slideShow = slideShow;
                 this.slideShow.onChange(() => {
@@ -12,6 +14,11 @@ class MasterClient extends Client_1.Client {
                 });
             });
         });
+        benchButton.on('click', () => {
+            this.server.benchPressed();
+        });
+        disconnectButton.show();
+        benchButton.show();
     }
     promptForCred() {
         const login = window.prompt("Login");

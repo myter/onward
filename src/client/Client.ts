@@ -2,6 +2,8 @@ import {CAPplication, FarRef} from "spiders.captain";
 import {OnwardServer} from "../server/server";
 import {Question, QuestionList} from "../data/Questions";
 import {SlideShow} from "../data/SlideShow";
+import {AVTC, AVTLC, BenchAvailable, BenchConsistent, CTC, CTLC} from "../data/BenchData";
+import {Chart} from "chart.js"
 
 const reveal : RevealStatic = (window as any).Reveal;
 reveal.configure({controls: false,keyboard : false,touch: false})
@@ -12,7 +14,9 @@ export class Client extends CAPplication{
     slideShow       : SlideShow
     created         : number
     votes           : Array<string>
-    config          : {serverActorAddress : string,serverActorPort : number, votesPerClient : number, questionsPerClient : number}
+    config          : {serverActorAddress : string,serverActorPort : number, votesPerClient : number, questionsPerClient : number,benchSlideH : number,benchSlideV: number}
+    tcChart         : Chart
+    tlcChart        : Chart
 
     constructor(){
         super()
@@ -38,10 +42,23 @@ export class Client extends CAPplication{
             })
             this.showQuestions()
         })
+        this.renderCharts()
     }
 
     gotoSlide(slideH,slideV){
         reveal.slide(slideH,slideV)
+        if(slideH == this.config.benchSlideH && slideV == this.config.benchSlideV){
+            $("#benchChartTC").show()
+            $("#benchChartTLC").show()
+        }
+        else{
+            $("#benchChartTC").hide()
+            $("#benchChartTLC").hide()
+        }
+    }
+
+    updateSampleSize(newSampleSize : number){
+        $("#sampleSize").text("Current Sample Size : " + newSampleSize)
     }
 
     showQuestions(){
@@ -68,5 +85,136 @@ export class Client extends CAPplication{
                 q.incVote()
             })
         })
+    }
+
+    startBench(benchAvailable : BenchAvailable,benchConsistent : BenchConsistent){
+        //Perform Available operations
+        let avOpTimes : Map<string,number> = new Map()
+        benchAvailable.onCommit(()=>{
+            if(avOpTimes.has(benchAvailable.value)){
+                let timeToConsistency = Date.now() - avOpTimes.get(benchAvailable.value)
+                this.server.newBenchValue(AVTC,timeToConsistency)
+            }
+        })
+        benchAvailable.onTentative(()=>{
+            let timeToLocalChange = Date.now() - avOpTimes.get(benchAvailable.value)
+            this.server.newBenchValue(AVTLC,timeToLocalChange)
+        })
+        for(var i = 0;i < 10;i++){
+            let newVal = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+                return v.toString(16);
+            })
+            avOpTimes.set(newVal,Date.now())
+            benchAvailable.change(newVal)
+        }
+        //Perform Consistent operations
+        for(var i = 0;i < 10;i++){
+            (benchConsistent.change(Date.now()) as any).then((startTime : number)=>{
+                let timeToLocalChange = Date.now() - startTime
+                this.server.newBenchValue(CTLC,timeToLocalChange)
+            })
+        }
+    }
+
+    newAverage(type : number,value : number, moe : number){
+        switch(type){
+            case AVTLC:
+                this.tlcChart.data.datasets[0].data[0] = value
+                this.tlcChart.update()
+                break
+            case AVTC:
+                this.tcChart.data.datasets[0].data[0] = value
+                this.tcChart.update()
+                break
+            case CTC:
+                this.tcChart.data.datasets[0].data[1] = value
+                this.tcChart.update()
+                break
+            case CTLC:
+                this.tlcChart.data.datasets[0].data[1] = value
+                this.tlcChart.update()
+                break
+        }
+    }
+
+    renderCharts(){
+        Chart.defaults.global.legend.display = false;
+        var ctx = (document.getElementById("benchChartTC") as any).getContext('2d');
+        this.tcChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ["Available", "Consistent"],
+                datasets: [{
+                    data: [10,10],
+                    backgroundColor: [
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                    ],
+                    borderColor: [
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                    ],
+                    borderWidth: 1
+                }]
+
+            },
+            options: {
+                maintainAspectRatio: false,
+                title: {
+                    display: true,
+                    text: 'Average Time to Consistency'
+                },
+                scales: {
+                    yAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'time (ms)'
+                        },
+                        ticks: {
+                            beginAtZero:true
+                        }
+                    }]
+                }
+            }
+        });
+        ctx = (document.getElementById("benchChartTLC") as any).getContext('2d');
+        this.tlcChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ["Available", "Consistent"],
+                datasets: [{
+                    data: [10,10],
+                    backgroundColor: [
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                    ],
+                    borderColor: [
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                    ],
+                    borderWidth: 1
+                }]
+
+            },
+            options: {
+                maintainAspectRatio: false,
+                title: {
+                    display: true,
+                    text: 'Average Time to Local Change'
+                },
+                scales: {
+                    yAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'time (ms)'
+                        },
+                        ticks: {
+                            beginAtZero:true
+                        }
+                    }]
+                }
+            }
+        });
     }
 }

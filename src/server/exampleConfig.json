@@ -6,6 +6,8 @@
   "masterLogin"          : "master",
   "masterPassword"       : "master",
   "tokenKey"             : "asecrettokenkey",
+  "benchSlideH"          : 9,
+  "benchSlideV"          : 1,
   "votesPerClient"       : 2,
   "questionsPerClient"   : 2
 }

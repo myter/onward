@@ -6,7 +6,9 @@ export class MasterClient extends Client{
 
     constructor(){
         super()
-        $("#disconnectButton").on('click',()=>{
+        let disconnectButton    = $("#disconnectButton")
+        let benchButton         = $("#benchButton")
+        disconnectButton.on('click',()=>{
             this.server.goOffline(this.token).then((slideShow : SlideShow)=>{
                 this.slideShow = slideShow
                 this.slideShow.onChange(()=>{
@@ -14,6 +16,11 @@ export class MasterClient extends Client{
                 })
             })
         })
+        benchButton.on('click',()=>{
+            this.server.benchPressed()
+        })
+        disconnectButton.show()
+        benchButton.show()
     }
 
     promptForCred(){

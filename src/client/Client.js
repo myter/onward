@@ -1,6 +1,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const spiders_captain_1 = require("spiders.captain");
 const Questions_1 = require("../data/Questions");
+const BenchData_1 = require("../data/BenchData");
+const chart_js_1 = require("chart.js");
 const reveal = window.Reveal;
 reveal.configure({ controls: false, keyboard: false, touch: false });
 class Client extends spiders_captain_1.CAPplication {
@@ -27,9 +29,21 @@ class Client extends spiders_captain_1.CAPplication {
             });
             this.showQuestions();
         });
+        this.renderCharts();
     }
     gotoSlide(slideH, slideV) {
         reveal.slide(slideH, slideV);
+        if (slideH == this.config.benchSlideH && slideV == this.config.benchSlideV) {
+            $("#benchChartTC").show();
+            $("#benchChartTLC").show();
+        }
+        else {
+            $("#benchChartTC").hide();
+            $("#benchChartTLC").hide();
+        }
+    }
+    updateSampleSize(newSampleSize) {
+        $("#sampleSize").text("Current Sample Size : " + newSampleSize);
     }
     showQuestions() {
         $("#questions").empty();
@@ -54,6 +68,132 @@ class Client extends spiders_captain_1.CAPplication {
                 }
                 q.incVote();
             });
+        });
+    }
+    startBench(benchAvailable, benchConsistent) {
+        //Perform Available operations
+        let avOpTimes = new Map();
+        benchAvailable.onCommit(() => {
+            if (avOpTimes.has(benchAvailable.value)) {
+                let timeToConsistency = Date.now() - avOpTimes.get(benchAvailable.value);
+                this.server.newBenchValue(BenchData_1.AVTC, timeToConsistency);
+            }
+        });
+        benchAvailable.onTentative(() => {
+            let timeToLocalChange = Date.now() - avOpTimes.get(benchAvailable.value);
+            this.server.newBenchValue(BenchData_1.AVTLC, timeToLocalChange);
+        });
+        for (var i = 0; i < 10; i++) {
+            let newVal = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+            avOpTimes.set(newVal, Date.now());
+            benchAvailable.change(newVal);
+        }
+        //Perform Consistent operations
+        for (var i = 0; i < 10; i++) {
+            benchConsistent.change(Date.now()).then((startTime) => {
+                let timeToLocalChange = Date.now() - startTime;
+                this.server.newBenchValue(BenchData_1.CTLC, timeToLocalChange);
+            });
+        }
+    }
+    newAverage(type, value, moe) {
+        switch (type) {
+            case BenchData_1.AVTLC:
+                this.tlcChart.data.datasets[0].data[0] = value;
+                this.tlcChart.update();
+                break;
+            case BenchData_1.AVTC:
+                this.tcChart.data.datasets[0].data[0] = value;
+                this.tcChart.update();
+                break;
+            case BenchData_1.CTC:
+                this.tcChart.data.datasets[0].data[1] = value;
+                this.tcChart.update();
+                break;
+            case BenchData_1.CTLC:
+                this.tlcChart.data.datasets[0].data[1] = value;
+                this.tlcChart.update();
+                break;
+        }
+    }
+    renderCharts() {
+        chart_js_1.Chart.defaults.global.legend.display = false;
+        var ctx = document.getElementById("benchChartTC").getContext('2d');
+        this.tcChart = new chart_js_1.Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ["Available", "Consistent"],
+                datasets: [{
+                        data: [10, 10],
+                        backgroundColor: [
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                        ],
+                        borderColor: [
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                        ],
+                        borderWidth: 1
+                    }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                title: {
+                    display: true,
+                    text: 'Average Time to Consistency'
+                },
+                scales: {
+                    yAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'time (ms)'
+                            },
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                }
+            }
+        });
+        ctx = document.getElementById("benchChartTLC").getContext('2d');
+        this.tlcChart = new chart_js_1.Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ["Available", "Consistent"],
+                datasets: [{
+                        data: [10, 10],
+                        backgroundColor: [
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                        ],
+                        borderColor: [
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                        ],
+                        borderWidth: 1
+                    }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                title: {
+                    display: true,
+                    text: 'Average Time to Local Change'
+                },
+                scales: {
+                    yAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'time (ms)'
+                            },
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                }
+            }
         });
     }
 }

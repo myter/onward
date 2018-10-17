@@ -18,14 +18,6 @@ export class SlideShow extends Consistent{
         this.checkToken         = checkToken
     }
 
-    slideChange(indexH,indexV){
-        this.currentSlideH = indexH
-        this.currentSlideV = indexV
-        this.listeners.forEach((f)=>{
-            f()
-        })
-    }
-
     go(direction : string,token){
         this.checkToken(token).then((ok)=>{
             if(ok){
@@ -59,7 +51,7 @@ export class SlideShow extends Consistent{
     }
 
     private goDown(){
-        this.currentSlideV = this.currentSlideV + 1
+        this.currentSlideV += 1
         this.listeners.forEach((f)=>{
             f()
         })
