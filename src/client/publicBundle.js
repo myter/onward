@@ -52763,7 +52763,9 @@ module.exports={
   "_inBundle": false,
   "_integrity": "sha512-jxnFyhAuFxYfjqIgduQlhzqTcOEQSn+OHKVfAxWaNWa7ecP7xSNk2Dx/3UEsDcY7NcFafxvNvKPmmO7HTwTxGQ==",
   "_location": "/socket.io-client",
-  "_phantomChildren": {},
+  "_phantomChildren": {
+    "ms": "2.0.0"
+  },
   "_requested": {
     "type": "version",
     "registry": true,
@@ -63798,10 +63800,8 @@ class Client extends spiders_captain_1.CAPplication {
         this.renderCharts();
     }
     gotoSlide(slideH, slideV) {
-        console.log("Going to: " + slideH + " , " + slideV + " Bench slide: " + this.config.benchSlideH + " , " + this.config.benchSlideV);
         reveal.slide(slideH, slideV);
         if (slideH == this.config.benchSlideH && slideV == this.config.benchSlideV) {
-            console.log("SHOWING BENCHMARKS");
             $("#benchChartTC").show();
             $("#benchChartTLC").show();
         }
@@ -64059,15 +64059,15 @@ exports.QuestionList = QuestionList;
 
 },{"spiders.captain":245}],302:[function(require,module,exports){
 module.exports={
-  "serverActorAddress"   : "127.0.0.1",
+  "serverActorAddress"   : "192.168.1.21",
   "serverActorPort"      : "8000",
   "serverHTMLMasterPort" : "9999",
   "serverHTMLSlavePort"  : "8888",
   "masterLogin"          : "master",
   "masterPassword"       : "master",
   "tokenKey"             : "asecrettokenkey",
-  "benchSlideH"          : 9,
-  "benchSlideV"          : 1,
+  "benchSlideH"          : 10,
+  "benchSlideV"          : 2,
   "votesPerClient"       : 2,
   "questionsPerClient"   : 2
 }

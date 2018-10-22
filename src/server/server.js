@@ -122,6 +122,9 @@ class OnwardServer extends spiders_captain_1.CAPplication {
             client.updateSampleSize(this.clients.length);
         }));
     }
+    temp(msg) {
+        console.log(msg);
+    }
     //TODO lock in sample size?
     benchPressed() {
         if (this.benching) {

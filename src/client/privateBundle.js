@@ -52763,7 +52763,9 @@ module.exports={
   "_inBundle": false,
   "_integrity": "sha512-jxnFyhAuFxYfjqIgduQlhzqTcOEQSn+OHKVfAxWaNWa7ecP7xSNk2Dx/3UEsDcY7NcFafxvNvKPmmO7HTwTxGQ==",
   "_location": "/socket.io-client",
-  "_phantomChildren": {},
+  "_phantomChildren": {
+    "ms": "2.0.0"
+  },
   "_requested": {
     "type": "version",
     "registry": true,
@@ -63798,10 +63800,8 @@ class Client extends spiders_captain_1.CAPplication {
         this.renderCharts();
     }
     gotoSlide(slideH, slideV) {
-        console.log("Going to: " + slideH + " , " + slideV + " Bench slide: " + this.config.benchSlideH + " , " + this.config.benchSlideV);
         reveal.slide(slideH, slideV);
         if (slideH == this.config.benchSlideH && slideV == this.config.benchSlideV) {
-            console.log("SHOWING BENCHMARKS");
             $("#benchChartTC").show();
             $("#benchChartTLC").show();
         }
@@ -64009,12 +64009,15 @@ class MasterClient extends Client_1.Client {
     }
 }
 exports.MasterClient = MasterClient;
+function installDesktopListener() {
+}
 //This script might be called multiple times by browser, ensure that only a single client actor is created
 if (!(window.clientInit)) {
     window.clientInit = true;
     let client = new MasterClient();
     //Ideally this would be an html page on its own
     client.login();
+    //Install listeners for desktop master
     $(document).keydown(function (e) {
         switch (e.which) {
             case 37: //left
@@ -64034,6 +64037,53 @@ if (!(window.clientInit)) {
         }
         e.preventDefault();
     });
+    //Install listeners for mobile master (swipe detection from https://stackoverflow.com/questions/2264072/detect-a-finger-swipe-through-javascript-on-the-iphone-and-android)
+    document.addEventListener('touchstart', handleTouchStart, false);
+    document.addEventListener('touchmove', handleTouchMove, false);
+    var xDown = null;
+    var yDown = null;
+    function getTouches(evt) {
+        return evt.touches || // browser API
+            evt.originalEvent.touches; // jQuery
+    }
+    function handleTouchStart(evt) {
+        xDown = getTouches(evt)[0].clientX;
+        yDown = getTouches(evt)[0].clientY;
+    }
+    ;
+    function handleTouchMove(evt) {
+        if (!xDown || !yDown) {
+            return;
+        }
+        var xUp = evt.touches[0].clientX;
+        var yUp = evt.touches[0].clientY;
+        var xDiff = xDown - xUp;
+        var yDiff = yDown - yUp;
+        if (Math.abs(xDiff) > Math.abs(yDiff)) { /*most significant*/
+            if (xDiff > 0) {
+                /* left swipe */
+                client.changeSlide(SlideShow_1.SlideShow.DIRECTION_LEFT);
+            }
+            else {
+                /* right swipe */
+                client.changeSlide(SlideShow_1.SlideShow.DIRECTION_RIGHT);
+            }
+        }
+        else {
+            if (yDiff > 0) {
+                /* up swipe */
+                client.changeSlide(SlideShow_1.SlideShow.DIRECTION_UP);
+            }
+            else {
+                /* down swipe */
+                client.changeSlide(SlideShow_1.SlideShow.DIRECTION_DOWN);
+            }
+        }
+        /* reset values */
+        xDown = null;
+        yDown = null;
+    }
+    ;
 }
 
 },{"../data/SlideShow":302,"./Client":298}],300:[function(require,module,exports){
@@ -64199,15 +64249,15 @@ exports.SlideShow = SlideShow;
 
 },{"spiders.captain":245}],303:[function(require,module,exports){
 module.exports={
-  "serverActorAddress"   : "127.0.0.1",
+  "serverActorAddress"   : "192.168.1.21",
   "serverActorPort"      : "8000",
   "serverHTMLMasterPort" : "9999",
   "serverHTMLSlavePort"  : "8888",
   "masterLogin"          : "master",
   "masterPassword"       : "master",
   "tokenKey"             : "asecrettokenkey",
-  "benchSlideH"          : 9,
-  "benchSlideV"          : 1,
+  "benchSlideH"          : 10,
+  "benchSlideV"          : 2,
   "votesPerClient"       : 2,
   "questionsPerClient"   : 2
 }

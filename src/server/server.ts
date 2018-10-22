@@ -144,6 +144,10 @@ export class OnwardServer extends CAPplication{
         }))
     }
 
+    temp(msg){
+        console.log(msg)
+    }
+
 
     //TODO lock in sample size?
     benchPressed(){

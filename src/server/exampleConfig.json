@@ -1,13 +1,13 @@
 {
-  "serverActorAddress"   : "127.0.0.1",
+  "serverActorAddress"   : "192.168.1.21",
   "serverActorPort"      : "8000",
   "serverHTMLMasterPort" : "9999",
   "serverHTMLSlavePort"  : "8888",
   "masterLogin"          : "master",
   "masterPassword"       : "master",
   "tokenKey"             : "asecrettokenkey",
-  "benchSlideH"          : 9,
-  "benchSlideV"          : 1,
+  "benchSlideH"          : 10,
+  "benchSlideV"          : 2,
   "votesPerClient"       : 2,
   "questionsPerClient"   : 2
 }
