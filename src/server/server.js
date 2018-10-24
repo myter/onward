@@ -11,6 +11,8 @@ function injectHTML(bundlePath, sourceHTMLPath, targetHTMLPath) {
     var htmlSource = fs.readFileSync(sourceHTMLPath, "utf8");
     var window = new jsdom(htmlSource).window;
     var $ = require('jquery')(window);
+    $('.slide-number-a').css('font-size', '40pt');
+    $('.slide-number-b').css('font-size', '40pt');
     $('body').append('<div id="modal1" class="modal">\n' +
         '    <div class="modal-content">\n' +
         '      <h4>Type Your Question</h4>\n' +
@@ -45,6 +47,9 @@ function injectHTML(bundlePath, sourceHTMLPath, targetHTMLPath) {
         'html, body {\n' +
         '  overflow-x: hidden;\n' +
         '}\n' +
+        '.reveal .slide-number {\n' +
+        '  font-size: 40pt;\n' +
+        '  color: #ffffff; }' +
         '</style>');
     $('body').append('<script src=' + bundlePath + ' />\n');
     $('body').append('<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>\n');

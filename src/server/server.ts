@@ -12,6 +12,8 @@ function injectHTML(bundlePath,sourceHTMLPath,targetHTMLPath){
     var htmlSource = fs.readFileSync(sourceHTMLPath, "utf8");
     var window = new jsdom(htmlSource).window
     var $ = require('jquery')(window)
+    $('.slide-number-a').css('font-size','40pt');
+    $('.slide-number-b').css('font-size','40pt');
     $('body').append(
         '<div id="modal1" class="modal">\n' +
         '    <div class="modal-content">\n' +

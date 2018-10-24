@@ -34,6 +34,8 @@ class Client extends spiders_captain_1.CAPplication {
     }
     gotoSlide(slideH, slideV) {
         reveal.slide(slideH, slideV);
+        $('.slide-number-a').css('font-size', '40pt');
+        $('.slide-number-b').css('font-size', '40pt');
         if (slideH == this.config.benchSlideH && slideV == this.config.benchSlideV) {
             $("#benchChartTC").show();
             $("#benchChartTLC").show();

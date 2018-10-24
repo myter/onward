@@ -8,6 +8,7 @@ import {Chart} from "chart.js"
 const reveal : RevealStatic = (window as any).Reveal;
 reveal.configure({controls: false,keyboard : false,touch: false})
 
+
 export class Client extends CAPplication{
     server          : FarRef<OnwardServer>
     questionList    : QuestionList
@@ -49,6 +50,8 @@ export class Client extends CAPplication{
 
     gotoSlide(slideH,slideV){
         reveal.slide(slideH,slideV)
+        $('.slide-number-a').css('font-size','30pt');
+        $('.slide-number-b').css('font-size','30pt');
         if(slideH == this.config.benchSlideH && slideV == this.config.benchSlideV){
             $("#benchChartTC").show()
             $("#benchChartTLC").show()
