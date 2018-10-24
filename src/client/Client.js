@@ -12,6 +12,7 @@ class Client extends spiders_captain_1.CAPplication {
         this.votes = [];
         this.created = 0;
         this.server = this.libs.buffRemote(this.config.serverActorAddress, this.config.serverActorPort);
+        this.laserShown = false;
         this.server.registerClient(this).then(([slideShow, questionList]) => {
             this.slideShow = slideShow;
             this.questionList = questionList;
@@ -119,6 +120,18 @@ class Client extends spiders_captain_1.CAPplication {
                 break;
         }
     }
+    dotPosition(x, y) {
+        if (!this.laserShown) {
+            $("#laserDot").show();
+            this.laserShown = true;
+        }
+        console.log("DOT POSITION: " + x + " , " + y);
+        $("#laserDot").css({ top: y * window.innerHeight, left: x * window.innerWidth });
+    }
+    hideDot() {
+        this.laserShown = false;
+        $("#laserDot").hide();
+    }
     renderCharts() {
         chart_js_1.Chart.defaults.global.legend.display = false;
         var ctx = document.getElementById("benchChartTC").getContext('2d');
@@ -127,7 +140,7 @@ class Client extends spiders_captain_1.CAPplication {
             data: {
                 labels: ["Available", "Consistent"],
                 datasets: [{
-                        data: [10, 10],
+                        data: [0, 0],
                         backgroundColor: [
                             'rgba(54, 162, 235, 0.2)',
                             'rgba(255, 206, 86, 0.2)',
@@ -164,7 +177,7 @@ class Client extends spiders_captain_1.CAPplication {
             data: {
                 labels: ["Available", "Consistent"],
                 datasets: [{
-                        data: [10, 10],
+                        data: [0, 0],
                         backgroundColor: [
                             'rgba(54, 162, 235, 0.2)',
                             'rgba(255, 206, 86, 0.2)',

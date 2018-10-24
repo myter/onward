@@ -1,4 +1,4 @@
-import {Eventual, Consistent, mutating} from "spiders.captain";
+import {Eventual, Consistent, mutating} from "spiders.captain"
 
 export var AVTC     = 0
 export var AVTLC    = 1

@@ -34,9 +34,20 @@ function injectHTML(bundlePath,sourceHTMLPath,targetHTMLPath){
         ' <a id="disconnectButton" style="position:absolute;right:2vw;top:0;display: none" ><i class="material-icons" style="font-size: 2vw">offline_bolt</i></a> \n'+
         ' <a id="benchButton" style="position:absolute;right:4vw;top:0;display: none" ><i class="material-icons" style="font-size: 2vw">timer</i></a> \n'+
         '<container style="position:absolute;right:20vw;top:40vh;width:30vw;height:40vh"><canvas id="benchChartTC" style="display:none"></canvas></container>\n' +
+        '<span id="laserDot" style="position:absolute;display: none;height: 25px;\n' +
+        '    width: 25px;\n' +
+        '    background-color: #008080;\n' +
+        '    border-radius: 50%;\n' +
+        '    display: inline-block;"></span>\n'+
         '<container style="position:absolute;left:20vw;top:40vh;width:30vw;height:40vh"><canvas id="benchChartTLC"  style="display:none"></canvas></container>\n')
     $('head').prepend('<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">')
     $('head').prepend('<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">')
+    $('head').prepend('<style>\n' +
+        'body {overscroll-behavior: none;position: relative}\n' +
+        'html, body {\n' +
+        '  overflow-x: hidden;\n' +
+        '}\n' +
+        '</style>')
     $('body').append('<script src='+bundlePath+' />\n')
     $('body').append('<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>\n')
     $('head').append('\n' +
@@ -144,6 +155,18 @@ export class OnwardServer extends CAPplication{
         }))
     }
 
+    moveDot(x,y){
+        this.clients.forEach((client : FarRef<Client>)=>{
+            client.dotPosition(x,y)
+        })
+    }
+
+    removeDot(){
+        this.clients.forEach((client : FarRef<Client>)=>{
+            client.hideDot()
+        })
+    }
+
     temp(msg){
         console.log(msg)
     }
@@ -191,8 +214,6 @@ export class OnwardServer extends CAPplication{
         })
     }
 }
-
-
 
 injectHTML("./privateBundle.js","../client/slides-onward-18-test.html","../client/private.html")
 injectHTML("./publicBundle.js","../client/slides-onward-18-test.html","../client/public.html")
