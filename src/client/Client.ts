@@ -15,7 +15,7 @@ export class Client extends CAPplication{
     slideShow       : SlideShow
     created         : number
     votes           : Array<string>
-    config          : {serverActorAddress : string,serverActorPort : number, votesPerClient : number, questionsPerClient : number,benchSlideH : number,benchSlideV: number,appSlideH : number}
+    config          : {serverActorAddress : string,serverActorPort : number, votesPerClient : number, questionsPerClient : number,benchSlideH : number,benchSlideV: number,appSlideH : number,lastSlideH : number,lastSlideV : number}
     tcChart         : Chart
     tlcChart        : Chart
     laserShown      : boolean
@@ -65,6 +65,11 @@ export class Client extends CAPplication{
         if(slideH >= this.config.appSlideH){
             $("#questionsButton").show()
         }
+        //Thaw button
+        if(slideH == this.config.lastSlideH && slideV == this.config.lastSlideV){
+            $("#disconnectButton").show()
+            //TODO client thawing mechanism
+        }
     }
 
     updateSampleSize(newSampleSize : number){
@@ -101,10 +106,7 @@ export class Client extends CAPplication{
         //Perform Available operations
         let avOpTimes : Map<string,number> = new Map()
         benchAvailable.onCommit(()=>{
-            if(avOpTimes.has(benchAvailable.value)){
-                let timeToConsistency = Date.now() - avOpTimes.get(benchAvailable.value)
-                this.server.newBenchValue(AVTC,timeToConsistency)
-            }
+            this.server.changeCommitted(benchAvailable.value)
         })
         benchAvailable.onTentative(()=>{
             let timeToLocalChange = Date.now() - avOpTimes.get(benchAvailable.value)
@@ -117,6 +119,7 @@ export class Client extends CAPplication{
             })
             avOpTimes.set(newVal,Date.now())
             benchAvailable.change(newVal)
+            this.server.availableChange(newVal,Date.now())
         }
         //Perform Consistent operations
         for(var i = 0;i < 10;i++){

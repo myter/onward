@@ -86,6 +86,8 @@ class OnwardServer extends spiders_captain_1.CAPplication {
         this.avTLCVals = [];
         this.cTCVals = [];
         this.cTLCVals = [];
+        this.avStartTimes = new Map();
+        this.commits = new Map();
         this.libs.serveApp("../client/private.html", "../client/PrivateClient.js", "privateBundle.js", 9999, '/public', '../public');
         console.log("Server listening on 9999 for private connection");
         this.libs.serveApp("../client/public.html", "../client/PublicClient.js", "publicBundle.js", 8888, '/public', '../public');
@@ -148,7 +150,7 @@ class OnwardServer extends spiders_captain_1.CAPplication {
     temp(msg) {
         console.log(msg);
     }
-    //TODO lock in sample size?
+    //TODO how to deal with the varying sample size while the benchmarks are running ?
     benchPressed() {
         if (this.benching) {
         }
@@ -161,6 +163,18 @@ class OnwardServer extends spiders_captain_1.CAPplication {
             this.clients.forEach((client) => {
                 client.startBench(this.benchAvailable, this.benchConsistent);
             });
+        }
+    }
+    availableChange(forValue, startTime) {
+        this.avStartTimes.set(forValue, startTime);
+    }
+    changeCommitted(forValue) {
+        if (!this.commits.has(forValue)) {
+            this.commits.set(forValue, 0);
+        }
+        this.commits.set(forValue, this.commits.get(forValue) + 1);
+        if (this.commits.get(forValue) == this.clients.length) {
+            this.newBenchValue(BenchData_1.AVTC, Date.now() - this.avStartTimes.get(forValue));
         }
     }
     newBenchValue(type, value) {

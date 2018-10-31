@@ -75,6 +75,8 @@ export class OnwardServer extends CAPplication{
     benchConsistent     : BenchConsistent
     benching            : boolean
     config              : {serverActorAddress : string, serverActorPort : number, masterLogin : string,masterPassword : string,tokenKey : string}
+    avStartTimes        : Map<string,number>
+    commits             : Map<string,number>
     avTCVals            : Array<number>
     avTLCVals           : Array<number>
     cTCVals             : Array<number>
@@ -100,7 +102,9 @@ export class OnwardServer extends CAPplication{
         this.avTCVals           = []
         this.avTLCVals          = []
         this.cTCVals            = []
-        this.cTLCVals           = [];
+        this.cTLCVals           = []
+        this.avStartTimes       = new Map()
+        this.commits            = new Map();
         (this.libs as any).serveApp("../client/private.html","../client/PrivateClient.js","privateBundle.js",9999,'/public','../public')
         console.log("Server listening on 9999 for private connection");
         (this.libs as any).serveApp("../client/public.html","../client/PublicClient.js","publicBundle.js",8888,'/public','../public')
@@ -174,7 +178,7 @@ export class OnwardServer extends CAPplication{
     }
 
 
-    //TODO lock in sample size?
+    //TODO how to deal with the varying sample size while the benchmarks are running ?
     benchPressed(){
         if(this.benching){
 
@@ -188,6 +192,20 @@ export class OnwardServer extends CAPplication{
             this.clients.forEach((client : FarRef<Client>)=>{
                 client.startBench(this.benchAvailable,this.benchConsistent)
             })
+        }
+    }
+
+    availableChange(forValue : string,startTime : number){
+        this.avStartTimes.set(forValue,startTime)
+    }
+
+    changeCommitted(forValue : string){
+        if(!this.commits.has(forValue)){
+            this.commits.set(forValue,0)
+        }
+        this.commits.set(forValue,this.commits.get(forValue)+1)
+        if(this.commits.get(forValue) == this.clients.length){
+            this.newBenchValue(AVTC,Date.now() - this.avStartTimes.get(forValue))
         }
     }
 

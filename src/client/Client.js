@@ -49,6 +49,11 @@ class Client extends spiders_captain_1.CAPplication {
         if (slideH >= this.config.appSlideH) {
             $("#questionsButton").show();
         }
+        //Thaw button
+        if (slideH == this.config.lastSlideH && slideV == this.config.lastSlideV) {
+            $("#disconnectButton").show();
+            //TODO client thawing mechanism
+        }
     }
     updateSampleSize(newSampleSize) {
         $("#sampleSize").text("Current Sample Size : " + newSampleSize);
@@ -82,10 +87,7 @@ class Client extends spiders_captain_1.CAPplication {
         //Perform Available operations
         let avOpTimes = new Map();
         benchAvailable.onCommit(() => {
-            if (avOpTimes.has(benchAvailable.value)) {
-                let timeToConsistency = Date.now() - avOpTimes.get(benchAvailable.value);
-                this.server.newBenchValue(BenchData_1.AVTC, timeToConsistency);
-            }
+            this.server.changeCommitted(benchAvailable.value);
         });
         benchAvailable.onTentative(() => {
             let timeToLocalChange = Date.now() - avOpTimes.get(benchAvailable.value);
@@ -98,6 +100,7 @@ class Client extends spiders_captain_1.CAPplication {
             });
             avOpTimes.set(newVal, Date.now());
             benchAvailable.change(newVal);
+            this.server.availableChange(newVal, Date.now());
         }
         //Perform Consistent operations
         for (var i = 0; i < 10; i++) {

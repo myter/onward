@@ -9,6 +9,8 @@
   "benchSlideH"          : 10,
   "benchSlideV"          : 2,
   "appSlideH"            : 9,
+  "lastSlideH"           : 12,
+  "lastSlideV"           : 2,
   "votesPerClient"       : 2,
   "questionsPerClient"   : 2
 }
