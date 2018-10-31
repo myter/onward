@@ -1,5 +1,5 @@
 {
-  "serverActorAddress"   : "134.184.43.135",
+  "serverActorAddress"   : "127.0.0.1",
   "serverActorPort"      : "8000",
   "serverHTMLMasterPort" : "9999",
   "serverHTMLSlavePort"  : "8888",
@@ -8,6 +8,7 @@
   "tokenKey"             : "asecrettokenkey",
   "benchSlideH"          : 10,
   "benchSlideV"          : 2,
+  "appSlideH"            : 9,
   "votesPerClient"       : 2,
   "questionsPerClient"   : 2
 }

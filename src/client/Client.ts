@@ -15,7 +15,7 @@ export class Client extends CAPplication{
     slideShow       : SlideShow
     created         : number
     votes           : Array<string>
-    config          : {serverActorAddress : string,serverActorPort : number, votesPerClient : number, questionsPerClient : number,benchSlideH : number,benchSlideV: number}
+    config          : {serverActorAddress : string,serverActorPort : number, votesPerClient : number, questionsPerClient : number,benchSlideH : number,benchSlideV: number,appSlideH : number}
     tcChart         : Chart
     tlcChart        : Chart
     laserShown      : boolean
@@ -52,6 +52,7 @@ export class Client extends CAPplication{
         reveal.slide(slideH,slideV)
         $('.slide-number-a').css('font-size','30pt');
         $('.slide-number-b').css('font-size','30pt');
+        //Benchmark charts
         if(slideH == this.config.benchSlideH && slideV == this.config.benchSlideV){
             $("#benchChartTC").show()
             $("#benchChartTLC").show()
@@ -59,6 +60,10 @@ export class Client extends CAPplication{
         else{
             $("#benchChartTC").hide()
             $("#benchChartTLC").hide()
+        }
+        //Questions button
+        if(slideH >= this.config.appSlideH){
+            $("#questionsButton").show()
         }
     }
 

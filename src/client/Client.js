@@ -34,8 +34,9 @@ class Client extends spiders_captain_1.CAPplication {
     }
     gotoSlide(slideH, slideV) {
         reveal.slide(slideH, slideV);
-        $('.slide-number-a').css('font-size', '40pt');
-        $('.slide-number-b').css('font-size', '40pt');
+        $('.slide-number-a').css('font-size', '30pt');
+        $('.slide-number-b').css('font-size', '30pt');
+        //Benchmark charts
         if (slideH == this.config.benchSlideH && slideV == this.config.benchSlideV) {
             $("#benchChartTC").show();
             $("#benchChartTLC").show();
@@ -43,6 +44,10 @@ class Client extends spiders_captain_1.CAPplication {
         else {
             $("#benchChartTC").hide();
             $("#benchChartTLC").hide();
+        }
+        //Questions button
+        if (slideH >= this.config.appSlideH) {
+            $("#questionsButton").show();
         }
     }
     updateSampleSize(newSampleSize) {

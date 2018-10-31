@@ -18,8 +18,18 @@ class MasterClient extends Client_1.Client {
         benchButton.on('click', () => {
             this.server.benchPressed();
         });
-        disconnectButton.show();
-        benchButton.show();
+    }
+    gotoSlide(slideH, slideV) {
+        super.gotoSlide(slideH, slideV);
+        if (slideH == this.config.benchSlideH && slideV == this.config.benchSlideV) {
+            $("#benchButton").show();
+        }
+        else {
+            $("#benchButton").hide();
+        }
+        if (slideH >= this.config.appSlideH) {
+            $("#disconnectButton").show();
+        }
     }
     promptForCred() {
         const login = window.prompt("Login");
@@ -115,14 +125,6 @@ function setupMobileMaster(client) {
         }
         else {
             client.server.moveDot(evt.touches[0].clientX / window.innerWidth, evt.touches[0].clientY / window.innerHeight);
-            //Only send 1 in 10 positions to avoid lag
-            /*if(positionsAccum == 9){
-                client.server.moveDot(evt.touches[0].clientX,evt.touches[0].clientY)
-                positionsAccum = 0
-            }
-            else{
-                positionsAccum += 1
-            }*/
         }
     }
     function handleTouchEnd() {

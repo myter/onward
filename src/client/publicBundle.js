@@ -63802,8 +63802,9 @@ class Client extends spiders_captain_1.CAPplication {
     }
     gotoSlide(slideH, slideV) {
         reveal.slide(slideH, slideV);
-        $('.slide-number-a').css('font-size', '40pt');
-        $('.slide-number-b').css('font-size', '40pt');
+        $('.slide-number-a').css('font-size', '30pt');
+        $('.slide-number-b').css('font-size', '30pt');
+        //Benchmark charts
         if (slideH == this.config.benchSlideH && slideV == this.config.benchSlideV) {
             $("#benchChartTC").show();
             $("#benchChartTLC").show();
@@ -63811,6 +63812,10 @@ class Client extends spiders_captain_1.CAPplication {
         else {
             $("#benchChartTC").hide();
             $("#benchChartTLC").hide();
+        }
+        //Questions button
+        if (slideH >= this.config.appSlideH) {
+            $("#questionsButton").show();
         }
     }
     updateSampleSize(newSampleSize) {
@@ -64074,7 +64079,7 @@ exports.QuestionList = QuestionList;
 
 },{"spiders.captain":245}],302:[function(require,module,exports){
 module.exports={
-  "serverActorAddress"   : "134.184.43.135",
+  "serverActorAddress"   : "127.0.0.1",
   "serverActorPort"      : "8000",
   "serverHTMLMasterPort" : "9999",
   "serverHTMLSlavePort"  : "8888",
@@ -64083,6 +64088,7 @@ module.exports={
   "tokenKey"             : "asecrettokenkey",
   "benchSlideH"          : 10,
   "benchSlideV"          : 2,
+  "appSlideH"            : 9,
   "votesPerClient"       : 2,
   "questionsPerClient"   : 2
 }
