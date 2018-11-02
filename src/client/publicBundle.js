@@ -64089,11 +64089,11 @@ module.exports={
   "masterLogin"          : "master",
   "masterPassword"       : "master",
   "tokenKey"             : "asecrettokenkey",
-  "benchSlideH"          : 10,
-  "benchSlideV"          : 2,
-  "appSlideH"            : 9,
-  "lastSlideH"           : 12,
-  "lastSlideV"           : 2,
+  "benchSlideH"          : 26,
+  "benchSlideV"          : 0,
+  "appSlideH"            : 21,
+  "lastSlideH"           : 29,
+  "lastSlideV"           : 0,
   "votesPerClient"       : 2,
   "questionsPerClient"   : 2
 }
