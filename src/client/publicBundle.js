@@ -63773,6 +63773,7 @@ const BenchData_1 = require("../data/BenchData");
 const chart_js_1 = require("chart.js");
 const reveal = window.Reveal;
 reveal.configure({ controls: false, keyboard: false, touch: false });
+$(document).attr("title", "CAPtain in Action");
 class Client extends spiders_captain_1.CAPplication {
     constructor() {
         super();
@@ -64082,7 +64083,7 @@ exports.QuestionList = QuestionList;
 
 },{"spiders.captain":245}],302:[function(require,module,exports){
 module.exports={
-  "serverActorAddress"   : "127.0.0.1",
+  "serverActorAddress"   : "172.20.1.144",
   "serverActorPort"      : "8000",
   "serverHTMLMasterPort" : "9999",
   "serverHTMLSlavePort"  : "8888",

@@ -30,7 +30,7 @@ function injectHTML(bundlePath, sourceHTMLPath, targetHTMLPath) {
         '    <li><button style="margin-left: 30%;margin-top:2em" data-target="modal1" class="btn modal-trigger" onclick="$(\'.modal\').modal();">Add Question</button></li> \n' +
         '    <li><ul style="margin-left: 1em" id="questions"></ul></li> \n' +
         '  </ul>\n' +
-        ' <a id="questionsButton" data-target="slide-out" class="sidenav-trigger"  style="position:absolute;right:0;top:0;display : none" onclick="$(\'.sidenav\').sidenav();"><i class="material-icons" style="font-size: 40px">menu</i></a> \n' + '' +
+        ' <a id="questionsButton" data-target="slide-out" class="sidenav-trigger"  style="position:absolute;right:0;top:0;display : none" onclick="$(\'.sidenav\').sidenav();"><i class="material-icons" style="font-size: 40px">question_answer</i></a> \n' + '' +
         ' <a id="disconnectButton" style="position:absolute;right:40px;top:0;display: none" ><i class="material-icons" style="font-size: 40px">offline_bolt</i></a> \n' +
         ' <a id="benchButton" style="position:absolute;right:80px;top:0;display: none" ><i class="material-icons" style="font-size: 40px">timer</i></a> \n' +
         '<container style="position:absolute;right:20vw;top:40vh;width:30vw;height:40vh"><canvas id="benchChartTC" style="display:none"></canvas></container>\n' +
@@ -38,6 +38,7 @@ function injectHTML(bundlePath, sourceHTMLPath, targetHTMLPath) {
         '    width: 25px;\n' +
         '    background-color: #008080;\n' +
         '    border-radius: 50%;\n' +
+        '    z-index: 999;\n' +
         '    display: inline-block;"></span>\n' +
         '<container style="position:absolute;left:20vw;top:40vh;width:30vw;height:40vh"><canvas id="benchChartTLC"  style="display:none"></canvas></container>\n');
     $('head').prepend('<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">');

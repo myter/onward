@@ -5,6 +5,7 @@ const BenchData_1 = require("../data/BenchData");
 const chart_js_1 = require("chart.js");
 const reveal = window.Reveal;
 reveal.configure({ controls: false, keyboard: false, touch: false });
+$(document).attr("title", "CAPtain in Action");
 class Client extends spiders_captain_1.CAPplication {
     constructor() {
         super();

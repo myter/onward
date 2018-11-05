@@ -7,7 +7,7 @@ import {Chart} from "chart.js"
 
 const reveal : RevealStatic = (window as any).Reveal;
 reveal.configure({controls: false,keyboard : false,touch: false})
-
+$(document).attr("title", "CAPtain in Action");
 
 export class Client extends CAPplication{
     server          : FarRef<OnwardServer>
