@@ -15,7 +15,7 @@ export class Client extends CAPplication{
     slideShow       : SlideShow
     created         : number
     votes           : Array<string>
-    config          : {serverActorAddress : string,serverActorPort : number, votesPerClient : number, questionsPerClient : number,benchSlideH : number,benchSlideV: number,appSlideH : number,lastSlideH : number,lastSlideV : number}
+    config          : {serverActorAddress : string,serverActorPort : number, votesPerClient : number, questionsPerClient : number,benchSlideH : number,appSlideH : number,lastSlideH : number}
     tcChart         : Chart
     tlcChart        : Chart
     laserShown      : boolean
@@ -53,7 +53,7 @@ export class Client extends CAPplication{
         $('.slide-number-a').css('font-size','30pt');
         $('.slide-number-b').css('font-size','30pt');
         //Benchmark charts
-        if(slideH == this.config.benchSlideH && slideV == this.config.benchSlideV){
+        if(slideH == this.config.benchSlideH){
             $("#benchChartTC").show()
             $("#benchChartTLC").show()
         }
@@ -66,7 +66,7 @@ export class Client extends CAPplication{
             $("#questionsButton").show()
         }
         //Thaw button
-        if(slideH == this.config.lastSlideH && slideV == this.config.lastSlideV){
+        if(slideH == this.config.lastSlideH && slideV){
             $("#disconnectButton").show()
             //TODO client thawing mechanism
         }

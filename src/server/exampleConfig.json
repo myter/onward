@@ -7,10 +7,8 @@
   "masterPassword"       : "master",
   "tokenKey"             : "asecrettokenkey",
   "benchSlideH"          : 26,
-  "benchSlideV"          : 0,
   "appSlideH"            : 21,
   "lastSlideH"           : 29,
-  "lastSlideV"           : 0,
   "votesPerClient"       : 2,
   "questionsPerClient"   : 2
 }

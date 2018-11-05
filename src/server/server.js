@@ -69,9 +69,10 @@ class OnwardServer extends spiders_captain_1.CAPplication {
         const config = require('./exampleConfig.json');
         super(config.serverActorAddress, config.serverActorPort);
         this.clients = [];
-        this.slideShow = new SlideShow_1.SlideShow((token) => {
+        var that = this;
+        this.slideShow = new SlideShow_1.SlideShow(function (token) {
             return new Promise((resolve, reject) => {
-                jsonwebtoken_1.verify(token, this.config.tokenKey, (err) => {
+                jsonwebtoken_1.verify(token, that.config.tokenKey, (err) => {
                     resolve(!err);
                 });
             });
@@ -116,10 +117,8 @@ class OnwardServer extends spiders_captain_1.CAPplication {
         this.clients.forEach(this.changeSlideForClient.bind(this));
     }
     changeSlideForClient(client) {
-        this.slideShow.currentSlideH.then((h) => {
-            this.slideShow.currentSlideV.then((v) => {
-                client.gotoSlide(h, v);
-            });
+        this.slideShow.currentSlide.then((current) => {
+            client.gotoSlide(current, 0);
         });
     }
     goOffline(token) {
@@ -127,6 +126,7 @@ class OnwardServer extends spiders_captain_1.CAPplication {
             jsonwebtoken_1.verify(token, this.config.tokenKey, (err) => {
                 if (!err) {
                     delete this.slideShow.listeners;
+                    delete this.slideShow.checkToken;
                     resolve(this.libs.thaw(this.slideShow));
                 }
             });

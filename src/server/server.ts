@@ -86,9 +86,10 @@ export class OnwardServer extends CAPplication{
         const config            = require('./exampleConfig.json')
         super(config.serverActorAddress,config.serverActorPort)
         this.clients            = []
-        this.slideShow          = new SlideShow((token)=>{
+        var that                = this
+        this.slideShow          = new SlideShow(function (token){
             return new Promise((resolve,reject)=>{
-                verify(token,this.config.tokenKey,(err)=>{
+                verify(token,that.config.tokenKey,(err)=>{
                     resolve(!err)
                 })
             }) as Promise<boolean>
@@ -137,10 +138,8 @@ export class OnwardServer extends CAPplication{
     }
 
     changeSlideForClient(client : FarRef<Client>){
-        (this.slideShow.currentSlideH as any).then((h)=>{
-            (this.slideShow.currentSlideV as any).then((v)=>{
-                client.gotoSlide(h,v)
-            })
+        (this.slideShow.currentSlide as any).then((current)=>{
+            client.gotoSlide(current,0)
         })
     }
 
@@ -149,6 +148,7 @@ export class OnwardServer extends CAPplication{
             verify(token,this.config.tokenKey,(err)=>{
                 if(!err){
                     delete this.slideShow.listeners
+                    delete this.slideShow.checkToken
                     resolve(this.libs.thaw(this.slideShow as any))
                 }
             })

@@ -12,9 +12,10 @@ export class MasterClient extends Client{
         let benchButton         = $("#benchButton")
         disconnectButton.on('click',()=>{
             this.server.goOffline(this.token).then((slideShow : SlideShow)=>{
+                slideShow.engageOffline()
                 this.slideShow = slideShow
                 this.slideShow.onChange(()=>{
-                    this.gotoSlide(this.slideShow.currentSlideH,this.slideShow.currentSlideV)
+                    this.gotoSlide(this.slideShow.currentSlide,0)
                 })
             })
         })
@@ -25,7 +26,7 @@ export class MasterClient extends Client{
 
     gotoSlide(slideH,slideV){
         super.gotoSlide(slideH,slideV)
-        if(slideH == this.config.benchSlideH && slideV == this.config.benchSlideV){
+        if(slideH == this.config.benchSlideH){
             $("#benchButton").show()
         }
         else{
@@ -52,9 +53,16 @@ export class MasterClient extends Client{
         })
     }
 
-    changeSlide(direction : string){
-        this.slideShow.go(direction,this.token)
+    changeSlide(inc : boolean){
+        if(inc){
+            this.slideShow.incSlide(this.token)
+        }
+        else{
+            this.slideShow.decSlide(this.token)
+        }
     }
+
+
 }
 
 function setupDesktopMaster(client : MasterClient){
@@ -62,19 +70,11 @@ function setupDesktopMaster(client : MasterClient){
     $(document).keydown(function(e) {
         switch(e.which) {
             case 37: //left
-                client.changeSlide(SlideShow.DIRECTION_LEFT)
-                break
-
-            case 38: //up
-                client.changeSlide(SlideShow.DIRECTION_UP)
+                client.changeSlide(false)
                 break
 
             case 39: //right
-                client.changeSlide(SlideShow.DIRECTION_RIGHT)
-                break
-
-            case 40: //down
-                client.changeSlide(SlideShow.DIRECTION_DOWN)
+                client.changeSlide(true)
                 break
 
             default:
@@ -114,18 +114,10 @@ function setupMobileMaster(client : MasterClient){
             if ( Math.abs( xDiff ) > Math.abs( yDiff ) ) {/*most significant*/
                 if ( xDiff > 0 ) {
                     /* left swipe */
-                    client.changeSlide(SlideShow.DIRECTION_RIGHT)
+                    client.changeSlide(true)
                 } else {
                     /* right swipe */
-                    client.changeSlide(SlideShow.DIRECTION_LEFT)
-                }
-            } else {
-                if ( yDiff > 0 ) {
-                    /* up swipe */
-                    client.changeSlide(SlideShow.DIRECTION_DOWN)
-                } else {
-                    /* down swipe */
-                    client.changeSlide(SlideShow.DIRECTION_UP)
+                    client.changeSlide(false)
                 }
             }
             /* reset values */

@@ -1,6 +1,5 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const Client_1 = require("./Client");
-const SlideShow_1 = require("../data/SlideShow");
 var pointMode = false;
 class MasterClient extends Client_1.Client {
     constructor() {
@@ -9,9 +8,10 @@ class MasterClient extends Client_1.Client {
         let benchButton = $("#benchButton");
         disconnectButton.on('click', () => {
             this.server.goOffline(this.token).then((slideShow) => {
+                slideShow.engageOffline();
                 this.slideShow = slideShow;
                 this.slideShow.onChange(() => {
-                    this.gotoSlide(this.slideShow.currentSlideH, this.slideShow.currentSlideV);
+                    this.gotoSlide(this.slideShow.currentSlide, 0);
                 });
             });
         });
@@ -21,7 +21,7 @@ class MasterClient extends Client_1.Client {
     }
     gotoSlide(slideH, slideV) {
         super.gotoSlide(slideH, slideV);
-        if (slideH == this.config.benchSlideH && slideV == this.config.benchSlideV) {
+        if (slideH == this.config.benchSlideH) {
             $("#benchButton").show();
         }
         else {
@@ -45,8 +45,13 @@ class MasterClient extends Client_1.Client {
             this.login();
         });
     }
-    changeSlide(direction) {
-        this.slideShow.go(direction, this.token);
+    changeSlide(inc) {
+        if (inc) {
+            this.slideShow.incSlide(this.token);
+        }
+        else {
+            this.slideShow.decSlide(this.token);
+        }
     }
 }
 exports.MasterClient = MasterClient;
@@ -55,16 +60,10 @@ function setupDesktopMaster(client) {
     $(document).keydown(function (e) {
         switch (e.which) {
             case 37: //left
-                client.changeSlide(SlideShow_1.SlideShow.DIRECTION_LEFT);
-                break;
-            case 38: //up
-                client.changeSlide(SlideShow_1.SlideShow.DIRECTION_UP);
+                client.changeSlide(false);
                 break;
             case 39: //right
-                client.changeSlide(SlideShow_1.SlideShow.DIRECTION_RIGHT);
-                break;
-            case 40: //down
-                client.changeSlide(SlideShow_1.SlideShow.DIRECTION_DOWN);
+                client.changeSlide(true);
                 break;
             default:
                 return;
@@ -102,21 +101,11 @@ function setupMobileMaster(client) {
             if (Math.abs(xDiff) > Math.abs(yDiff)) { /*most significant*/
                 if (xDiff > 0) {
                     /* left swipe */
-                    client.changeSlide(SlideShow_1.SlideShow.DIRECTION_RIGHT);
+                    client.changeSlide(true);
                 }
                 else {
                     /* right swipe */
-                    client.changeSlide(SlideShow_1.SlideShow.DIRECTION_LEFT);
-                }
-            }
-            else {
-                if (yDiff > 0) {
-                    /* up swipe */
-                    client.changeSlide(SlideShow_1.SlideShow.DIRECTION_DOWN);
-                }
-                else {
-                    /* down swipe */
-                    client.changeSlide(SlideShow_1.SlideShow.DIRECTION_UP);
+                    client.changeSlide(false);
                 }
             }
             /* reset values */

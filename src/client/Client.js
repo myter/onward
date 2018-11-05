@@ -38,7 +38,7 @@ class Client extends spiders_captain_1.CAPplication {
         $('.slide-number-a').css('font-size', '30pt');
         $('.slide-number-b').css('font-size', '30pt');
         //Benchmark charts
-        if (slideH == this.config.benchSlideH && slideV == this.config.benchSlideV) {
+        if (slideH == this.config.benchSlideH) {
             $("#benchChartTC").show();
             $("#benchChartTLC").show();
         }
@@ -51,7 +51,7 @@ class Client extends spiders_captain_1.CAPplication {
             $("#questionsButton").show();
         }
         //Thaw button
-        if (slideH == this.config.lastSlideH && slideV == this.config.lastSlideV) {
+        if (slideH == this.config.lastSlideH && slideV) {
             $("#disconnectButton").show();
             //TODO client thawing mechanism
         }
