@@ -40,8 +40,7 @@ function injectHTML(bundlePath,sourceHTMLPath,targetHTMLPath){
         '    width: 25px;\n' +
         '    background-color: #008080;\n' +
         '    border-radius: 50%;\n' +
-        '    z-index: 999;\n' +
-        '    display: inline-block;"></span>\n'+
+        '    z-index: 999;"></span>\n'+
         '<container style="position:absolute;left:20vw;top:40vh;width:30vw;height:40vh"><canvas id="benchChartTLC"  style="display:none"></canvas></container>\n')
     $('head').prepend('<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">')
     $('head').prepend('<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">')
