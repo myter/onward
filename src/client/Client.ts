@@ -85,10 +85,28 @@ export class Client extends CAPplication{
         questions.reverse()
         questions.forEach((q)=>{
             if((this.votes as any).includes(q.id)){
-                $("#questions").append('<li><div class="row"><div class="col s9"><p class="flow-text">'+q.text+'</p></div><div class="col s2"><a class="btn-floating btn-large teal" id="'+q.id+'">'+q.votes+'</a></div></div></li>')
+                let el = $('<li/>')
+                let row = $('<div class="row"/>')
+                let col = $('<div class="col s9"/>')
+                let p   = $('<p class="flow-text"/>')
+                el.append(row)
+                row.append(col)
+                col.append(p)
+                p.text(q.text)
+                row.append('<div class="col s2"><a class="btn-floating btn-large teal" id="'+q.id+'">'+q.votes+'</a></div>')
+                $('#questions').append(el)
             }
             else{
-                $("#questions").append('<li><div class="row"><div class="col s9"><p class="flow-text">'+q.text+'</p></div><div class="col s2"><a class="btn-floating btn-large teal lighten-5" id="'+q.id+'">'+q.votes+'</a></div></div></li>')
+                let el = $('<li/>')
+                let row = $('<div class="row"/>')
+                let col = $('<div class="col s9"/>')
+                let p   = $('<p class="flow-text"/>')
+                el.append(row)
+                row.append(col)
+                col.append(p)
+                p.text(q.text)
+                row.append('<div class="col s2"><a class="btn-floating btn-large teal lighten-5" id="'+q.id+'">'+q.votes+'</a></div>')
+                $('#questions').append(el)
             }
             $("#questions").append('<li><div class="divider"></div></li>')
             $('#'+q.id).on('click',()=>{

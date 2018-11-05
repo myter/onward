@@ -10,9 +10,7 @@
       <change beforePath="$PROJECT_DIR$/src/client/privateBundle.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/privateBundle.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/client/public.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/public.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/client/publicBundle.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/publicBundle.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/server.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/server.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/server.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/server.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/server.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/slides-onward-18-test.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/slides-onward-18-test.html" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -54,11 +52,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Client.ts" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Client.ts" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/client/Client.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="9" column="44" selection-start-line="9" selection-start-column="44" selection-end-line="9" selection-end-column="44" />
+            <state relative-caret-position="238">
+              <caret line="109" selection-start-line="109" selection-end-line="109" />
               <folding>
                 <element signature="e#0#53#0" expanded="true" />
                 <element signature="n#!!block;n#gotoSlide#0;n#Client#0" expanded="true" />
@@ -85,10 +83,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="exampleConfig.json" pinned="false" current-in-tab="true">
+      <file leaf-file-name="exampleConfig.json" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/server/exampleConfig.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
+            <state relative-caret-position="10">
               <caret line="1" column="37" selection-start-line="1" selection-start-column="37" selection-end-line="1" selection-end-column="37" />
             </state>
           </provider>
@@ -158,9 +156,9 @@
         <option value="$PROJECT_DIR$/package.json" />
         <option value="$PROJECT_DIR$/src/data/BenchData.ts" />
         <option value="$PROJECT_DIR$/src/client/PrivateClient.ts" />
-        <option value="$PROJECT_DIR$/src/client/Client.ts" />
         <option value="$PROJECT_DIR$/src/server/server.ts" />
         <option value="$PROJECT_DIR$/src/server/exampleConfig.json" />
+        <option value="$PROJECT_DIR$/src/client/Client.ts" />
       </list>
     </option>
   </component>
@@ -302,7 +300,7 @@
       <workItem from="1540975464911" duration="8751000" />
       <workItem from="1541080518436" duration="87000" />
       <workItem from="1541162050504" duration="760000" />
-      <workItem from="1541366924715" duration="2959000" />
+      <workItem from="1541366924715" duration="4211000" />
     </task>
     <task id="LOCAL-00001" summary="First server-ready version">
       <created>1538991985156</created>
@@ -479,11 +477,18 @@
       <option name="project" value="LOCAL" />
       <updated>1541165119992</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="Title + laser dot z-index">
+      <created>1541386568582</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1541386568582</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="130157000" />
+    <option name="totallyTimeSpent" value="131409000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="807" extended-state="6" />
@@ -553,7 +558,8 @@
     <MESSAGE value="Added slide for dry-run" />
     <MESSAGE value="fixed measuring of available TC" />
     <MESSAGE value="new slide deck" />
-    <option name="LAST_COMMIT_MESSAGE" value="new slide deck" />
+    <MESSAGE value="Title + laser dot z-index" />
+    <option name="LAST_COMMIT_MESSAGE" value="Title + laser dot z-index" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -860,19 +866,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/client/Client.ts">
+    <entry file="file://$PROJECT_DIR$/src/server/exampleConfig.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" column="44" selection-start-line="9" selection-start-column="44" selection-end-line="9" selection-end-column="44" />
-          <folding>
-            <element signature="e#0#53#0" expanded="true" />
-            <element signature="n#!!block;n#gotoSlide#0;n#Client#0" expanded="true" />
-            <element signature="n#!!block;n#startBench#0;n#Client#0" expanded="true" />
-            <element signature="e#4548#4621#0" expanded="true" />
-            <element signature="e#5397#5541#0" expanded="true" />
-            <element signature="n#!!block;n#newAverage#0;n#Client#0" expanded="true" />
-            <element signature="n#!!block;n#dotPosition#0;n#Client#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="10">
+          <caret line="1" column="37" selection-start-line="1" selection-start-column="37" selection-end-line="1" selection-end-column="37" />
         </state>
       </provider>
     </entry>
@@ -902,10 +899,19 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/server/exampleConfig.json">
+    <entry file="file://$PROJECT_DIR$/src/client/Client.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="1" column="37" selection-start-line="1" selection-start-column="37" selection-end-line="1" selection-end-column="37" />
+        <state relative-caret-position="238">
+          <caret line="109" selection-start-line="109" selection-end-line="109" />
+          <folding>
+            <element signature="e#0#53#0" expanded="true" />
+            <element signature="n#!!block;n#gotoSlide#0;n#Client#0" expanded="true" />
+            <element signature="n#!!block;n#startBench#0;n#Client#0" expanded="true" />
+            <element signature="e#4548#4621#0" expanded="true" />
+            <element signature="e#5397#5541#0" expanded="true" />
+            <element signature="n#!!block;n#newAverage#0;n#Client#0" expanded="true" />
+            <element signature="n#!!block;n#dotPosition#0;n#Client#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
