@@ -63803,7 +63803,6 @@ class Client extends spiders_captain_1.CAPplication {
         this.renderCharts();
     }
     gotoSlide(slideH, slideV) {
-        console.log(this.thawed);
         if (!this.thawed) {
             reveal.slide(slideH, slideV);
         }
@@ -64146,7 +64145,7 @@ module.exports={
   "masterPassword"       : "master",
   "tokenKey"             : "asecrettokenkey",
   "benchSlideH"          : 26,
-  "appSlideH"            : 21,
+  "appSlideH"            : 11,
   "lastSlideH"           : 29,
   "votesPerClient"       : 2,
   "questionsPerClient"   : 2

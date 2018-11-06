@@ -7,7 +7,7 @@
   "masterPassword"       : "master",
   "tokenKey"             : "asecrettokenkey",
   "benchSlideH"          : 26,
-  "appSlideH"            : 21,
+  "appSlideH"            : 11,
   "lastSlideH"           : 29,
   "votesPerClient"       : 2,
   "questionsPerClient"   : 2
