@@ -146,6 +146,25 @@ class OnwardServer extends spiders_captain_1.CAPplication {
             });
         });
     }
+    audianceOffline() {
+        return new Promise((resolve) => {
+            this.slideShow.listeners.then((lists) => {
+                delete this.slideShow.listeners;
+                resolve(this.libs.thaw(this.slideShow));
+                setTimeout(() => {
+                    this.slideShow.listeners = lists;
+                    var that = this;
+                    this.slideShow.checkToken = function (token) {
+                        return new Promise((resolve, reject) => {
+                            jsonwebtoken_1.verify(token, that.config.tokenKey, (err) => {
+                                resolve(!err);
+                            });
+                        });
+                    };
+                }, 100);
+            });
+        });
+    }
     goOnline(token, availableSlides, currentSlide) {
         return new Promise((resolve) => {
             jsonwebtoken_1.verify(token, this.config.tokenKey, (err) => {
@@ -192,7 +211,6 @@ class OnwardServer extends spiders_captain_1.CAPplication {
     temp(msg) {
         console.log(msg);
     }
-    //TODO how to deal with the varying sample size while the benchmarks are running ?
     benchPressed() {
         this.benching = true;
         this.benchAvailable = new BenchData_1.BenchAvailable();

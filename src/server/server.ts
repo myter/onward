@@ -170,6 +170,28 @@ export class OnwardServer extends CAPplication{
         })
     }
 
+    audianceOffline(){
+        return new Promise((resolve)=>{
+            (this.slideShow.listeners as any).then((lists)=>{
+                delete this.slideShow.listeners;
+                resolve(this.libs.thaw(this.slideShow as any))
+                setTimeout(()=>{
+                    this.slideShow.listeners = lists
+                    var that = this
+                    this.slideShow.checkToken = function (token){
+                        return new Promise((resolve,reject)=>{
+                            verify(token,that.config.tokenKey,(err)=>{
+                                resolve(!err)
+                            })
+                        }) as Promise<boolean>
+                    }
+                },100)
+
+            })
+        })
+    }
+
+
     goOnline(token,availableSlides,currentSlide){
         return new Promise((resolve)=>{
             verify(token,this.config.tokenKey,(err)=>{
@@ -221,8 +243,6 @@ export class OnwardServer extends CAPplication{
         console.log(msg)
     }
 
-
-    //TODO how to deal with the varying sample size while the benchmarks are running ?
     benchPressed(){
         this.benching           = true
         this.benchAvailable     = new BenchAvailable()
