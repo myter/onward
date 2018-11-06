@@ -77,6 +77,7 @@ export class OnwardServer extends CAPplication{
     config              : {serverActorAddress : string, serverActorPort : number, masterLogin : string,masterPassword : string,tokenKey : string}
     avStartTimes        : Map<string,number>
     commits             : Map<string,number>
+    lastCommit          : Map<string,number>
     avTCVals            : Array<number>
     avTLCVals           : Array<number>
     cTCVals             : Array<number>
@@ -105,6 +106,7 @@ export class OnwardServer extends CAPplication{
         this.cTCVals            = []
         this.cTLCVals           = []
         this.avStartTimes       = new Map()
+        this.lastCommit         = new Map()
         this.commits            = new Map();
         (this.libs as any).serveApp("../client/private.html","../client/PrivateClient.js","privateBundle.js",9999,'/public','../public')
         console.log("Server listening on 9999 for private connection");
@@ -113,10 +115,23 @@ export class OnwardServer extends CAPplication{
     }
 
     registerClient(clientRef : FarRef<Client>){
-        //TODO check if benchmarking
         this.clients.push(clientRef)
         this.changeSlideForClient(clientRef)
         this.sampleSizeChange()
+        if(this.benching){
+            let avtc = new Stats()
+            avtc.push(this.avTCVals)
+            let avtlc = new Stats()
+            avtlc.push(this.avTLCVals)
+            let ctc = new Stats()
+            ctc.push(this.cTCVals)
+            let ctlc = new Stats()
+            ctlc.push(this.cTLCVals)
+            clientRef.newAverage(AVTC,avtc.median(),avtc.moe())
+            clientRef.newAverage(AVTLC,avtlc.median(),avtlc.moe())
+            clientRef.newAverage(CTC,ctc.median(),ctc.moe())
+            clientRef.newAverage(CTLC,ctlc.median(),ctlc.moe())
+        }
         return [this.slideShow,this.questionList]
     }
 
@@ -155,6 +170,35 @@ export class OnwardServer extends CAPplication{
         })
     }
 
+    goOnline(token,availableSlides,currentSlide){
+        return new Promise((resolve)=>{
+            verify(token,this.config.tokenKey,(err)=>{
+                if(!err){
+                    let consistentSlides = this.libs.freeze(availableSlides)
+                    consistentSlides.currentSlide = currentSlide
+                    this.slideShow = consistentSlides
+                    var that       = this
+                    this.slideShow.checkToken = function (token){
+                        return new Promise((resolve,reject)=>{
+                            verify(token,that.config.tokenKey,(err)=>{
+                                resolve(!err)
+                            })
+                        }) as Promise<boolean>
+                    }
+                    this.slideShow.onChange(()=>{
+                        this.slideChange()
+                    });
+                    this.clients.forEach((client : FarRef<Client>)=>{
+                        client.slideReset(this.slideShow);
+                        (this.slideShow.currentSlide as any).then((current)=>{
+                            client.gotoSlide(current,0)
+                        })
+                    })
+                }
+            })
+        })
+    }
+
     sampleSizeChange(){
         this.clients.forEach(((client : FarRef<Client>)=>{
             client.updateSampleSize(this.clients.length)
@@ -180,19 +224,15 @@ export class OnwardServer extends CAPplication{
 
     //TODO how to deal with the varying sample size while the benchmarks are running ?
     benchPressed(){
-        if(this.benching){
-
-        }
-        else{
-            this.benchAvailable     = new BenchAvailable()
-            this.benchConsistent    = new BenchConsistent((changeStart : number)=>{
-                let tc = Date.now() - changeStart
-                this.newBenchValue(CTC,tc)
-            })
-            this.clients.forEach((client : FarRef<Client>)=>{
-                client.startBench(this.benchAvailable,this.benchConsistent)
-            })
-        }
+        this.benching           = true
+        this.benchAvailable     = new BenchAvailable()
+        this.benchConsistent    = new BenchConsistent((changeStart : number)=>{
+            let tc = Date.now() - changeStart
+            this.newBenchValue(CTC,tc)
+        })
+        this.clients.forEach((client : FarRef<Client>)=>{
+            client.startBench(this.benchAvailable,this.benchConsistent)
+        })
     }
 
     availableChange(forValue : string,startTime : number){
@@ -204,6 +244,15 @@ export class OnwardServer extends CAPplication{
             this.commits.set(forValue,0)
         }
         this.commits.set(forValue,this.commits.get(forValue)+1)
+        this.lastCommit.set(forValue,Date.now())
+        //Initiate approximation countdown (e.g. a client disconnects while benchmarks are running, don't wait forever for client to reconnect)
+        if(this.commits.get(forValue) == 1){
+            setTimeout(()=>{
+                if(this.commits.get(forValue) < this.clients.length){
+                    this.newBenchValue(AVTC,this.lastCommit.get(forValue) - this.avStartTimes.get(forValue))
+                }
+            },6000)
+        }
         if(this.commits.get(forValue) == this.clients.length){
             this.newBenchValue(AVTC,Date.now() - this.avStartTimes.get(forValue))
         }

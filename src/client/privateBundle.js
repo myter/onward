@@ -64006,6 +64006,9 @@ class Client extends spiders_captain_1.CAPplication {
             }
         });
     }
+    slideReset(newSlides) {
+        this.slideShow = newSlides;
+    }
 }
 exports.Client = Client;
 
@@ -64016,16 +64019,24 @@ var pointMode = false;
 class MasterClient extends Client_1.Client {
     constructor() {
         super();
+        this.offlineMode = false;
         let disconnectButton = $("#disconnectButton");
         let benchButton = $("#benchButton");
         disconnectButton.on('click', () => {
-            this.server.goOffline(this.token).then((slideShow) => {
-                slideShow.engageOffline();
-                this.slideShow = slideShow;
-                this.slideShow.onChange(() => {
-                    this.gotoSlide(this.slideShow.currentSlide, 0);
+            if (!this.offlineMode) {
+                this.server.goOffline(this.token).then((slideShow) => {
+                    this.offlineMode = true;
+                    slideShow.engageOffline();
+                    this.slideShow = slideShow;
+                    this.slideShow.onChange(() => {
+                        this.gotoSlide(this.slideShow.currentSlide, 0);
+                    });
                 });
-            });
+            }
+            else {
+                this.slideShow.listeners = [];
+                this.server.goOnline(this.token, this.slideShow, this.slideShow.currentSlide);
+            }
         });
         benchButton.on('click', () => {
             this.server.benchPressed();

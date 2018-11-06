@@ -262,4 +262,8 @@ export class Client extends CAPplication{
             }
         });
     }
+
+    slideReset(newSlides){
+        this.slideShow = newSlides
+    }
 }

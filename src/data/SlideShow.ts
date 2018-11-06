@@ -1,4 +1,4 @@
-import {Consistent} from "spiders.captain";
+import {Consistent, mutating} from "spiders.captain";
 
 export class SlideShow extends Consistent{
     currentSlide  : number

@@ -88,6 +88,7 @@ class OnwardServer extends spiders_captain_1.CAPplication {
         this.cTCVals = [];
         this.cTLCVals = [];
         this.avStartTimes = new Map();
+        this.lastCommit = new Map();
         this.commits = new Map();
         this.libs.serveApp("../client/private.html", "../client/PrivateClient.js", "privateBundle.js", 9999, '/public', '../public');
         console.log("Server listening on 9999 for private connection");
@@ -95,10 +96,23 @@ class OnwardServer extends spiders_captain_1.CAPplication {
         console.log("Server listening on 8888 for public connection");
     }
     registerClient(clientRef) {
-        //TODO check if benchmarking
         this.clients.push(clientRef);
         this.changeSlideForClient(clientRef);
         this.sampleSizeChange();
+        if (this.benching) {
+            let avtc = new Stats();
+            avtc.push(this.avTCVals);
+            let avtlc = new Stats();
+            avtlc.push(this.avTLCVals);
+            let ctc = new Stats();
+            ctc.push(this.cTCVals);
+            let ctlc = new Stats();
+            ctlc.push(this.cTLCVals);
+            clientRef.newAverage(BenchData_1.AVTC, avtc.median(), avtc.moe());
+            clientRef.newAverage(BenchData_1.AVTLC, avtlc.median(), avtlc.moe());
+            clientRef.newAverage(BenchData_1.CTC, ctc.median(), ctc.moe());
+            clientRef.newAverage(BenchData_1.CTLC, ctlc.median(), ctlc.moe());
+        }
         return [this.slideShow, this.questionList];
     }
     loginMaster(login, password) {
@@ -132,6 +146,34 @@ class OnwardServer extends spiders_captain_1.CAPplication {
             });
         });
     }
+    goOnline(token, availableSlides, currentSlide) {
+        return new Promise((resolve) => {
+            jsonwebtoken_1.verify(token, this.config.tokenKey, (err) => {
+                if (!err) {
+                    let consistentSlides = this.libs.freeze(availableSlides);
+                    consistentSlides.currentSlide = currentSlide;
+                    this.slideShow = consistentSlides;
+                    var that = this;
+                    this.slideShow.checkToken = function (token) {
+                        return new Promise((resolve, reject) => {
+                            jsonwebtoken_1.verify(token, that.config.tokenKey, (err) => {
+                                resolve(!err);
+                            });
+                        });
+                    };
+                    this.slideShow.onChange(() => {
+                        this.slideChange();
+                    });
+                    this.clients.forEach((client) => {
+                        client.slideReset(this.slideShow);
+                        this.slideShow.currentSlide.then((current) => {
+                            client.gotoSlide(current, 0);
+                        });
+                    });
+                }
+            });
+        });
+    }
     sampleSizeChange() {
         this.clients.forEach(((client) => {
             client.updateSampleSize(this.clients.length);
@@ -152,18 +194,15 @@ class OnwardServer extends spiders_captain_1.CAPplication {
     }
     //TODO how to deal with the varying sample size while the benchmarks are running ?
     benchPressed() {
-        if (this.benching) {
-        }
-        else {
-            this.benchAvailable = new BenchData_1.BenchAvailable();
-            this.benchConsistent = new BenchData_1.BenchConsistent((changeStart) => {
-                let tc = Date.now() - changeStart;
-                this.newBenchValue(BenchData_1.CTC, tc);
-            });
-            this.clients.forEach((client) => {
-                client.startBench(this.benchAvailable, this.benchConsistent);
-            });
-        }
+        this.benching = true;
+        this.benchAvailable = new BenchData_1.BenchAvailable();
+        this.benchConsistent = new BenchData_1.BenchConsistent((changeStart) => {
+            let tc = Date.now() - changeStart;
+            this.newBenchValue(BenchData_1.CTC, tc);
+        });
+        this.clients.forEach((client) => {
+            client.startBench(this.benchAvailable, this.benchConsistent);
+        });
     }
     availableChange(forValue, startTime) {
         this.avStartTimes.set(forValue, startTime);
@@ -173,6 +212,15 @@ class OnwardServer extends spiders_captain_1.CAPplication {
             this.commits.set(forValue, 0);
         }
         this.commits.set(forValue, this.commits.get(forValue) + 1);
+        this.lastCommit.set(forValue, Date.now());
+        //Initiate approximation countdown (e.g. a client disconnects while benchmarks are running, don't wait forever for client to reconnect)
+        if (this.commits.get(forValue) == 1) {
+            setTimeout(() => {
+                if (this.commits.get(forValue) < this.clients.length) {
+                    this.newBenchValue(BenchData_1.AVTC, this.lastCommit.get(forValue) - this.avStartTimes.get(forValue));
+                }
+            }, 6000);
+        }
         if (this.commits.get(forValue) == this.clients.length) {
             this.newBenchValue(BenchData_1.AVTC, Date.now() - this.avStartTimes.get(forValue));
         }

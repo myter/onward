@@ -238,6 +238,9 @@ class Client extends spiders_captain_1.CAPplication {
             }
         });
     }
+    slideReset(newSlides) {
+        this.slideShow = newSlides;
+    }
 }
 exports.Client = Client;
 //# sourceMappingURL=Client.js.map
