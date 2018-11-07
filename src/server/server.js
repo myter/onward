@@ -66,10 +66,11 @@ function injectHTML(bundlePath, sourceHTMLPath, targetHTMLPath) {
 }
 class OnwardServer extends spiders_captain_1.CAPplication {
     constructor() {
-        const config = require('./exampleConfig.json');
+        const config = require('./examplePrivateConfig.json');
         super(config.serverActorAddress, config.serverActorPort);
         this.clients = [];
         var that = this;
+        this.endReached = false;
         this.slideShow = new SlideShow_1.SlideShow(function (token) {
             return new Promise((resolve, reject) => {
                 jsonwebtoken_1.verify(token, that.config.tokenKey, (err) => {
@@ -113,6 +114,10 @@ class OnwardServer extends spiders_captain_1.CAPplication {
             clientRef.newAverage(BenchData_1.CTC, ctc.median(), ctc.moe());
             clientRef.newAverage(BenchData_1.CTLC, ctlc.median(), ctlc.moe());
         }
+        if (this.endReached) {
+            clientRef.installEndButton();
+            clientRef.installQuestionButton();
+        }
         return [this.slideShow, this.questionList];
     }
     loginMaster(login, password) {
@@ -128,6 +133,11 @@ class OnwardServer extends spiders_captain_1.CAPplication {
         }
     }
     slideChange() {
+        this.slideShow.currentSlide.then((currentSlide) => {
+            if (currentSlide == this.config.lastSlideH) {
+                this.endReached = true;
+            }
+        });
         this.clients.forEach(this.changeSlideForClient.bind(this));
     }
     changeSlideForClient(client) {
@@ -149,19 +159,13 @@ class OnwardServer extends spiders_captain_1.CAPplication {
     audianceOffline() {
         return new Promise((resolve) => {
             this.slideShow.listeners.then((lists) => {
-                delete this.slideShow.listeners;
-                resolve(this.libs.thaw(this.slideShow));
-                setTimeout(() => {
-                    this.slideShow.listeners = lists;
-                    var that = this;
-                    this.slideShow.checkToken = function (token) {
-                        return new Promise((resolve, reject) => {
-                            jsonwebtoken_1.verify(token, that.config.tokenKey, (err) => {
-                                resolve(!err);
-                            });
-                        });
-                    };
-                }, 100);
+                //delete this.slideShow.listeners;
+                this.slideShow.emptyListeners().then(() => {
+                    (this.libs.thaw(this.slideShow)).then((availableSlides) => {
+                        this.slideShow.listeners = lists;
+                        resolve(availableSlides);
+                    });
+                });
             });
         });
     }
@@ -180,6 +184,7 @@ class OnwardServer extends spiders_captain_1.CAPplication {
                             });
                         });
                     };
+                    this.slideShow.disengageOffline();
                     this.slideShow.onChange(() => {
                         this.slideChange();
                     });
@@ -269,7 +274,14 @@ class OnwardServer extends spiders_captain_1.CAPplication {
     }
 }
 exports.OnwardServer = OnwardServer;
-injectHTML("./privateBundle.js", "../client/slides-onward-18-test.html", "../client/private.html");
-injectHTML("./publicBundle.js", "../client/slides-onward-18-test.html", "../client/public.html");
-new OnwardServer();
+if (fs.existsSync("../client/public.html")) {
+    console.log("STARTING SERVER");
+    new OnwardServer();
+}
+else {
+    console.log("CREATING HTML & STARTING SERVER");
+    injectHTML("./privateBundle.js", "../client/slides-onward-18-test.html", "../client/private.html");
+    injectHTML("./publicBundle.js", "../client/slides-onward-18-test.html", "../client/public.html");
+    new OnwardServer();
+}
 //# sourceMappingURL=server.js.map

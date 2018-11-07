@@ -1,0 +1,11 @@
+{
+  "serverActorAddress"   : "127.0.0.1",
+  "serverActorPort"      : "8000",
+  "serverHTMLMasterPort" : "9999",
+  "serverHTMLSlavePort"  : "8888",
+  "benchSlideH"          : 26,
+  "appSlideH"            : 11,
+  "lastSlideH"           : 29,
+  "votesPerClient"       : 2,
+  "questionsPerClient"   : 2
+}

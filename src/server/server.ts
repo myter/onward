@@ -74,7 +74,7 @@ export class OnwardServer extends CAPplication{
     benchAvailable      : BenchAvailable
     benchConsistent     : BenchConsistent
     benching            : boolean
-    config              : {serverActorAddress : string, serverActorPort : number, masterLogin : string,masterPassword : string,tokenKey : string}
+    config              : {serverActorAddress : string, serverActorPort : number, masterLogin : string,masterPassword : string,tokenKey : string,lastSlideH : number}
     avStartTimes        : Map<string,number>
     commits             : Map<string,number>
     lastCommit          : Map<string,number>
@@ -82,12 +82,14 @@ export class OnwardServer extends CAPplication{
     avTLCVals           : Array<number>
     cTCVals             : Array<number>
     cTLCVals            : Array<number>
+    endReached          : boolean
 
     constructor(){
-        const config            = require('./exampleConfig.json')
+        const config            = require('./examplePrivateConfig.json')
         super(config.serverActorAddress,config.serverActorPort)
         this.clients            = []
         var that                = this
+        this.endReached         = false
         this.slideShow          = new SlideShow(function (token){
             return new Promise((resolve,reject)=>{
                 verify(token,that.config.tokenKey,(err)=>{
@@ -132,6 +134,10 @@ export class OnwardServer extends CAPplication{
             clientRef.newAverage(CTC,ctc.median(),ctc.moe())
             clientRef.newAverage(CTLC,ctlc.median(),ctlc.moe())
         }
+        if(this.endReached){
+            clientRef.installEndButton()
+            clientRef.installQuestionButton()
+        }
         return [this.slideShow,this.questionList]
     }
 
@@ -149,6 +155,11 @@ export class OnwardServer extends CAPplication{
     }
 
     slideChange(){
+        (this.slideShow.currentSlide as any).then((currentSlide)=>{
+            if(currentSlide == this.config.lastSlideH){
+                this.endReached = true
+            }
+        })
         this.clients.forEach(this.changeSlideForClient.bind(this))
     }
 
@@ -173,20 +184,13 @@ export class OnwardServer extends CAPplication{
     audianceOffline(){
         return new Promise((resolve)=>{
             (this.slideShow.listeners as any).then((lists)=>{
-                delete this.slideShow.listeners;
-                resolve(this.libs.thaw(this.slideShow as any))
-                setTimeout(()=>{
-                    this.slideShow.listeners = lists
-                    var that = this
-                    this.slideShow.checkToken = function (token){
-                        return new Promise((resolve,reject)=>{
-                            verify(token,that.config.tokenKey,(err)=>{
-                                resolve(!err)
-                            })
-                        }) as Promise<boolean>
-                    }
-                },100)
-
+                //delete this.slideShow.listeners;
+                (this.slideShow.emptyListeners() as any).then(()=>{
+                    (this.libs.thaw(this.slideShow as any)).then((availableSlides)=>{
+                        this.slideShow.listeners = lists
+                        resolve(availableSlides)
+                    })
+                })
             })
         })
     }
@@ -207,6 +211,7 @@ export class OnwardServer extends CAPplication{
                             })
                         }) as Promise<boolean>
                     }
+                    this.slideShow.disengageOffline()
                     this.slideShow.onChange(()=>{
                         this.slideChange()
                     });
@@ -303,10 +308,17 @@ export class OnwardServer extends CAPplication{
         })
     }
 }
+if (fs.existsSync("../client/public.html")) {
+    console.log("STARTING SERVER")
+    new OnwardServer()
+}
+else{
+    console.log("CREATING HTML & STARTING SERVER")
+    injectHTML("./privateBundle.js","../client/slides-onward-18-test.html","../client/private.html")
+    injectHTML("./publicBundle.js","../client/slides-onward-18-test.html","../client/public.html")
+    new OnwardServer()
+}
 
-injectHTML("./privateBundle.js","../client/slides-onward-18-test.html","../client/private.html")
-injectHTML("./publicBundle.js","../client/slides-onward-18-test.html","../client/public.html")
-new OnwardServer()
 
 
 

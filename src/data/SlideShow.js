@@ -52,6 +52,9 @@ class SlideShow extends spiders_captain_1.Consistent {
         }
         this.listeners.push(listener);
     }
+    emptyListeners() {
+        this.listeners = [];
+    }
 }
 exports.SlideShow = SlideShow;
 //# sourceMappingURL=SlideShow.js.map

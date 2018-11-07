@@ -62,4 +62,8 @@ export class SlideShow extends Consistent{
         }
         this.listeners.push(listener)
     }
+
+    emptyListeners(){
+        this.listeners = []
+    }
 }
