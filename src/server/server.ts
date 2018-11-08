@@ -96,7 +96,7 @@ export class OnwardServer extends CAPplication{
                     resolve(!err)
                 })
             }) as Promise<boolean>
-        });
+        },config.lastSlideH,0);
         this.config             = config
         this.benching           = false
         this.slideShow.onChange(()=>{
